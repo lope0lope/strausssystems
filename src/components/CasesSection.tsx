@@ -1,10 +1,9 @@
 const cases = [
   {
-    industry: "Agriculture · KZN",
+    industry: "Agriculture · South Africa",
     title: "Herd Health Monitoring Platform",
-    body: "A livestock farmer was consistently identifying herd health issues too late — costing him animals and revenue every season. He knew there was a pattern in his data; he just had no way to surface it. We built a monitoring tool that analyses herd behaviour and biological indicators, flagging issues months before they escalate. At current cattle prices, the system paid for itself within the first season.",
+    body: "A livestock farmer was consistently identifying herd health issues too late — costing him animals and revenue every season. He knew there was a pattern in his data; he just had no way to surface it. We built a monitoring tool that analyses herd behaviour and biological indicators, flagging issues months before they escalate. The system paid for itself within the first season.",
     metrics: [
-      { val: "R40k", label: "Project investment" },
       { val: "< 1 season", label: "Payback period" },
     ],
   },
@@ -13,7 +12,6 @@ const cases = [
     title: "Multi-Business Commerce Platform",
     body: "A business owner had a clear vision for a platform that would allow other businesses to sell their products through a shared marketplace. The idea was solid — what he needed was someone who could turn it into a real product, not just a concept. We produced a full 13-page implementation plan covering architecture, feature costs, timelines, and commercialisation strategy, then executed the build.",
     metrics: [
-      { val: "R70k", label: "Project investment" },
       { val: "2 months", label: "Concept to delivery" },
     ],
   },

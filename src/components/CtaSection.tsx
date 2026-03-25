@@ -11,7 +11,7 @@ const CtaSection = () => {
           Let's talk about<br />your <em className="italic text-gold-light">biggest headache</em>
         </h2>
         <p className="text-[1.05rem] text-muted-text max-w-[520px] mx-auto mb-10 leading-[1.8]">
-          Book a free 30-minute call. No pitch, no jargon — just a straight conversation about what's frustrating you in your business and whether I can help.
+          Book a free 30-minute call. No pitch, no jargon — just a straight conversation about what's frustrating you in your business and whether we can help.
         </p>
         <div className="flex gap-4 justify-center flex-wrap">
           <a href="mailto:jstraurss@gmail.com" className="bg-gold text-ink font-sans text-[0.82rem] font-semibold tracking-[0.1em] uppercase px-8 py-4 no-underline rounded-sm hover:bg-gold-light transition-colors">

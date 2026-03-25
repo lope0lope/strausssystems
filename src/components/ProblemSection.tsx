@@ -19,13 +19,13 @@ const ProblemSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center mt-16">
         <div className="space-y-5">
           <p className="text-[1.05rem] text-cream/75 leading-[1.85]">
-            Most business owners I work with are running operations that depend entirely on them being in the room. <strong className="text-cream font-medium">They've got systems held together with WhatsApp messages, spreadsheets nobody else understands, and manual processes that eat hours every week.</strong>
+            Most business owners we work with are running operations that depend entirely on them being in the room. <strong className="text-cream font-medium">They've got systems held together with WhatsApp messages, spreadsheets nobody else understands, and manual processes that eat hours every week.</strong>
           </p>
           <p className="text-[1.05rem] text-cream/75 leading-[1.85]">
             They know it's costing them. They've just never found someone who could fix it without making it complicated, expensive, or someone else's problem to maintain.
           </p>
           <p className="text-[1.05rem] text-cream/75 leading-[1.85]">
-            That's exactly what I do. I sit down with you, understand how your business actually works, and <strong className="text-cream font-medium">build the tools that let it run without you having to carry it every day.</strong>
+            That's exactly what we do. We sit down with you, understand how your business actually works, and <strong className="text-cream font-medium">build the tools that let it run without you having to carry it every day.</strong>
           </p>
         </div>
         <div className="flex flex-col gap-4">

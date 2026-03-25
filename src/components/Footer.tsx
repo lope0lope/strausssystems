@@ -10,7 +10,7 @@ const Footer = () => {
         <li><a href="#about" className="text-[0.8rem] text-muted-text no-underline hover:text-gold-light transition-colors">About</a></li>
         <li><a href="#contact" className="text-[0.8rem] text-muted-text no-underline hover:text-gold-light transition-colors">Contact</a></li>
       </ul>
-      <p className="text-[0.8rem] text-muted-text">© 2026 Strauss Systems · Pietermaritzburg, KZN</p>
+      <p className="text-[0.8rem] text-muted-text">© 2026 Strauss Systems · South Africa</p>
     </footer>
   );
 };
