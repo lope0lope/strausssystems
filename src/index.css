@@ -81,3 +81,8 @@
 .animate-delay-300 { animation-delay: 0.3s; }
 .animate-delay-400 { animation-delay: 0.4s; }
 .animate-delay-350 { animation-delay: 0.35s; }
+
+#lovable-badge {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
