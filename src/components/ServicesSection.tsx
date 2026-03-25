@@ -3,22 +3,19 @@ const services = [
     num: "01",
     name: "Diagnostic & Strategy",
     tag: "Entry Point",
-    desc: "We spend a half-day mapping your current workflows, identifying where time and money are being lost, and recommending whether custom software, an AI integration, or a process change is the right move. You leave with a clear plan — whether you proceed with me or not.",
-    price: "From R4,500 — R7,500",
+    desc: "We spend a half-day mapping your current workflows, identifying where time and money are being lost, and recommending whether custom software, an AI integration, or a process change is the right move. You leave with a clear plan — whether you proceed with us or not.",
   },
   {
     num: "02",
     name: "Custom Build",
     tag: "Core Service",
-    desc: "I design and build the software or system your business needs — end to end. Management platforms, monitoring tools, automation workflows, AI integrations. Every solution is built for your specific problem, not adapted from a template. The investment reflects the value it creates.",
-    price: "From R60,000 — R150,000+",
+    desc: "We design and build the software or system your business needs — end to end. Management platforms, monitoring tools, automation workflows, AI integrations. Every solution is built for your specific problem, not adapted from a template.",
   },
   {
     num: "03",
     name: "Advisory Retainer",
     tag: "Ongoing",
-    desc: "Once your system is live, I stay involved as your in-house technology partner — without the full-time salary. Maintenance, continuous improvement, strategic advice, and someone who already knows your business inside out. Most clients move here after their first build.",
-    price: "From R4,500 — R20,000/month",
+    desc: "Once your system is live, we stay involved as your in-house technology partner — without the full-time salary. Maintenance, continuous improvement, strategic advice, and a team that already knows your business inside out. Most clients move here after their first build.",
   },
 ];
 
@@ -49,8 +46,7 @@ const ServicesSection = () => {
             <span className="inline-block text-[0.7rem] font-semibold tracking-[0.12em] uppercase text-gold bg-gold/10 border border-gold/25 px-2.5 py-0.5 rounded-sm mb-5">
               {s.tag}
             </span>
-            <p className="text-[0.9rem] text-cream/60 leading-[1.75] mb-6">{s.desc}</p>
-            <div className="font-serif text-[1.1rem] text-gold-light">{s.price}</div>
+            <p className="text-[0.9rem] text-cream/60 leading-[1.75]">{s.desc}</p>
           </div>
         ))}
       </div>
