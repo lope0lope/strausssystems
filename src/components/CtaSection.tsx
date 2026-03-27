@@ -14,7 +14,7 @@ const CtaSection = () => {
           Book a free 30-minute call. No pitch, no jargon — just a straight conversation about what's frustrating you in your business and whether we can help.
         </p>
         <div className="flex gap-4 justify-center flex-wrap">
-          <a className="bg-gold text-ink font-sans text-[0.82rem] font-semibold tracking-[0.1em] uppercase px-8 py-4 no-underline rounded-sm hover:bg-gold-light transition-colors" href="mailto:jstraurss@gmail.com">
+          <a className="bg-gold text-ink font-sans text-[0.82rem] font-semibold tracking-[0.1em] uppercase px-8 py-4 no-underline rounded-sm hover:bg-gold-light transition-colors" href="https://calendly.com/jason-bookings/discover-call" target="_blank" rel="noopener noreferrer">
             Book a Discovery Call
           </a>
           <a href="tel:+27836829642" className="text-cream-mid font-sans text-[0.82rem] font-medium tracking-[0.1em] uppercase px-8 py-4 no-underline border border-cream/20 rounded-sm hover:border-cream-mid hover:text-cream transition-colors">
