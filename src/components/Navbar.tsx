@@ -9,7 +9,7 @@ const Navbar = () => {
         <li><a href="#work" className="text-[0.82rem] font-medium tracking-[0.1em] uppercase text-muted-text no-underline hover:text-gold-light transition-colors">Our Work</a></li>
         <li><a href="#about" className="text-[0.82rem] font-medium tracking-[0.1em] uppercase text-muted-text no-underline hover:text-gold-light transition-colors">About</a></li>
       </ul>
-      <a href="#contact" className="text-[0.8rem] font-medium tracking-[0.08em] uppercase text-gold border border-gold px-5 py-2 no-underline rounded-sm hover:bg-gold hover:text-ink transition-colors">
+      <a href="https://calendly.com/jason-bookings/discover-call" target="_blank" rel="noopener noreferrer" className="text-[0.8rem] font-medium tracking-[0.08em] uppercase text-gold border border-gold px-5 py-2 no-underline rounded-sm hover:bg-gold hover:text-ink transition-colors">
         Book a Call
       </a>
     </nav>

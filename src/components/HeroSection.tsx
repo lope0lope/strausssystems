@@ -20,7 +20,7 @@ const HeroSection = () => {
           We build custom software and operational systems for business owners who know exactly what problem they have — and need someone who can actually fix it.
         </p>
         <div className="animate-fade-up animate-delay-400 flex gap-4 flex-wrap">
-          <a href="#contact" className="bg-gold text-ink font-sans text-[0.82rem] font-semibold tracking-[0.1em] uppercase px-8 py-4 no-underline rounded-sm hover:bg-gold-light transition-colors">
+          <a href="https://calendly.com/jason-bookings/discover-call" target="_blank" rel="noopener noreferrer" className="bg-gold text-ink font-sans text-[0.82rem] font-semibold tracking-[0.1em] uppercase px-8 py-4 no-underline rounded-sm hover:bg-gold-light transition-colors">
             Book a Free Discovery Call
           </a>
           <a href="#work" className="text-cream-mid font-sans text-[0.82rem] font-medium tracking-[0.1em] uppercase px-8 py-4 no-underline border border-cream/20 rounded-sm hover:border-cream-mid hover:text-cream transition-colors">
