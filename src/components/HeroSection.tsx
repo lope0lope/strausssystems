@@ -32,11 +32,6 @@ const HeroSection = () => {
       <div className="flex justify-start md:justify-end items-center relative z-10">
         <div className="animate-fade-up animate-delay-350 bg-ink-soft border border-gold/20 rounded-sm p-10 w-full max-w-[400px] relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-gold to-transparent rounded-t-sm" />
-          <div className="w-[72px] h-[72px] rounded-full border-2 border-gold/40 mb-5 overflow-hidden">
-            <img src={profileImg} alt="Jason Strauss" className="w-full h-full object-cover" />
-          </div>
-          <div className="font-serif text-2xl font-medium text-cream mb-1">Jason Strauss</div>
-          <div className="text-[0.8rem] tracking-[0.1em] uppercase text-gold mb-6">Founder · Strauss Systems</div>
           <div className="grid grid-cols-2 gap-4 border-t border-cream/[0.08] pt-6">
             <div>
               <div className="text-[0.72rem] tracking-[0.1em] uppercase text-muted-text mb-1">Years Experience</div>
