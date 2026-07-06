@@ -1,0 +1,9 @@
+# Strauss-Strategies
+
+> Business systems consulting for South African business owners — custom software and operational systems that replace manual spreadsheets and WhatsApp-based operations.
+
+Strauss-Strategies helps growing South African businesses design and implement the operational systems, automations, and custom software they need to scale without adding headcount.
+
+## Pages
+
+- [Home](/): Overview of services, approach, case studies, and how to book a discovery call.
