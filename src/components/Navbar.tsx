@@ -1,8 +1,10 @@
+import logo from "@/assets/strauss-strategies-logo.png";
+
 const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-[5vw] py-5 bg-background/85 backdrop-blur-md border-b border-gold/15">
-      <a href="#" className="font-serif text-xl font-medium tracking-wider text-cream no-underline">
-        Strauss<span className="text-gold">.</span>Systems
+      <a href="#" className="block h-10 no-underline">
+        <img src={logo} alt="Strauss-Strategies" className="h-full w-auto object-contain" loading="lazy" width={280} height={40} />
       </a>
       <ul className="hidden md:flex gap-10 list-none">
         <li><a href="#services" className="text-[0.82rem] font-medium tracking-[0.1em] uppercase text-muted-text no-underline hover:text-gold-light transition-colors">Services</a></li>
