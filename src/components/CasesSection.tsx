@@ -76,12 +76,15 @@ const CasesSection = () => {
             <iframe
               key={posts[index].id}
               title={posts[index].title}
-              srcDoc={posts[index].html}
+              srcDoc={withAutoHeight(posts[index].html, posts[index].id)}
               sandbox="allow-scripts allow-popups"
               loading="lazy"
-              className="w-full h-[720px] md:h-[820px] border-0 block"
+              scrolling="no"
+              style={{ height: heights[posts[index].id] ?? 820 }}
+              className="w-full border-0 block overflow-hidden"
             />
           </div>
+
 
           <div className="flex flex-wrap gap-2 mt-5">
             {posts.map((p, i) => (
