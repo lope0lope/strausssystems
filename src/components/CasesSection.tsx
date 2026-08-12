@@ -8,10 +8,42 @@ type WorkPost = {
   html: string;
 };
 
+const withAutoHeight = (html: string, id: string) => {
+  const script = `<script>(function(){
+    var id=${JSON.stringify(id)};
+    function send(){
+      var d=document.documentElement, b=document.body;
+      var h=Math.max(d.scrollHeight,b?b.scrollHeight:0,d.offsetHeight,b?b.offsetHeight:0);
+      parent.postMessage({__postHeight:true,id:id,height:h},'*');
+    }
+    window.addEventListener('load',send);
+    window.addEventListener('resize',send);
+    if(window.ResizeObserver){new ResizeObserver(send).observe(document.documentElement);}
+    setInterval(send,500);
+    send();
+  })();<\/script>`;
+  return html.includes("</body>") ? html.replace("</body>", script + "</body>") : html + script;
+};
+
 const CasesSection = () => {
   const [posts, setPosts] = useState<WorkPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [index, setIndex] = useState(0);
+  const [heights, setHeights] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      const d = e.data;
+      if (d && d.__postHeight && typeof d.height === "number" && d.height > 0) {
+        setHeights((prev) =>
+          Math.abs((prev[d.id] ?? 0) - d.height) > 2 ? { ...prev, [d.id]: d.height } : prev
+        );
+      }
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
+
 
   useEffect(() => {
     const load = async () => {
