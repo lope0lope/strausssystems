@@ -30,7 +30,7 @@ const HeroSection = () => {
       </div>
 
       <div className="flex justify-start md:justify-end items-center relative z-10">
-        <div className="animate-fade-up animate-delay-350 bg-ink-soft border border-gold/20 rounded-sm p-10 w-full max-w-[400px] relative overflow-hidden">
+        <div className="animate-fade-up animate-delay-350 glass-panel rounded-sm p-10 w-full max-w-[400px] relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-gold to-transparent rounded-t-sm" />
           <div className="grid grid-cols-2 gap-4 border-t border-cream/[0.08] pt-6">
             <div>

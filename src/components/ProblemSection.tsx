@@ -30,7 +30,7 @@ const ProblemSection = () => {
         </div>
         <div className="flex flex-col gap-4">
           {problemQuotes.map((quote, i) => (
-            <div key={i} className="bg-ink border border-cream/[0.08] border-l-[3px] border-l-gold rounded-sm px-6 py-5 hover:border-l-gold-light transition-colors">
+            <div key={i} className="glass-panel border-l-[3px] border-l-gold rounded-sm px-6 py-5 hover:border-l-gold-light hover:-translate-y-1 transition-all duration-300">
               <p className="text-[0.95rem] text-cream/70 leading-[1.65]">"{quote}"</p>
             </div>
           ))}
