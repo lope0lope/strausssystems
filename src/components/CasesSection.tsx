@@ -73,12 +73,12 @@ const CasesSection = () => {
       </h2>
 
       {loading ? (
-        <div className="mt-16 h-[600px] rounded-sm border border-cream/[0.08] bg-ink animate-pulse" />
+        <div className="mt-16 h-[600px] rounded-sm glass-panel animate-pulse" />
       ) : count === 0 ? (
         <p className="mt-16 text-cream/60">Case studies are on their way.</p>
       ) : (
-        <div className="mt-12">
-          <div className="flex items-center justify-between gap-4 mb-4">
+        <div className="mt-12 glass-panel rounded-sm p-3 sm:p-5">
+          <div className="flex items-center justify-between gap-4 mb-4 px-1">
             <h3 className="font-serif text-xl text-cream truncate">{posts[index].title}</h3>
             <div className="flex items-center gap-3 shrink-0">
               <span className="text-[0.75rem] tracking-[0.12em] text-muted-text">
@@ -88,7 +88,7 @@ const CasesSection = () => {
                 type="button"
                 onClick={() => go(-1)}
                 aria-label="Previous case study"
-                className="w-9 h-9 grid place-items-center rounded-sm border border-cream/15 text-cream hover:border-gold hover:text-gold transition-colors"
+                className="w-9 h-9 grid place-items-center rounded-sm bg-cream/5 backdrop-blur-md border border-cream/15 text-cream hover:border-gold hover:text-gold hover:bg-gold/10 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -96,14 +96,14 @@ const CasesSection = () => {
                 type="button"
                 onClick={() => go(1)}
                 aria-label="Next case study"
-                className="w-9 h-9 grid place-items-center rounded-sm border border-cream/15 text-cream hover:border-gold hover:text-gold transition-colors"
+                className="w-9 h-9 grid place-items-center rounded-sm bg-cream/5 backdrop-blur-md border border-cream/15 text-cream hover:border-gold hover:text-gold hover:bg-gold/10 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-sm border border-cream/[0.08] bg-ink">
+          <div className="relative overflow-hidden rounded-sm border border-cream/10 bg-ink/80 shadow-glass">
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-gold to-gold/20 z-10" />
             <iframe
               key={posts[index].id}
@@ -128,7 +128,7 @@ const CasesSection = () => {
                 className={`text-[0.72rem] tracking-[0.08em] px-3 py-2 rounded-sm border transition-colors ${
                   i === index
                     ? "bg-gold border-gold text-ink font-medium"
-                    : "border-cream/15 text-cream/60 hover:text-cream hover:border-gold/50"
+                    : "bg-cream/5 backdrop-blur-md border-cream/15 text-cream/60 hover:text-cream hover:border-gold/50"
                 }`}
               >
                 {p.title}

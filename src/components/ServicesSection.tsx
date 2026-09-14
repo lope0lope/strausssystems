@@ -39,7 +39,7 @@ const ServicesSection = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {services.map((s) => (
-          <div key={s.num} className="group bg-ink-soft border border-cream/[0.08] rounded-sm p-8 relative overflow-hidden hover:border-gold/35 hover:-translate-y-[3px] transition-all duration-300">
+          <div key={s.num} className="group glass-panel rounded-sm p-8 relative overflow-hidden hover:border-gold/35 hover:-translate-y-1 hover:shadow-glass transition-all duration-300">
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300" />
             <div className="font-serif text-5xl font-light text-gold/20 leading-none mb-4">{s.num}</div>
             <div className="font-serif text-[1.45rem] text-cream mb-2">{s.name}</div>
