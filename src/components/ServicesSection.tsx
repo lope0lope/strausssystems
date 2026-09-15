@@ -21,32 +21,35 @@ const services = [
 
 const ServicesSection = () => {
   return (
-    <section className="px-[5vw] py-24" id="services">
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 items-start mb-16">
+    <section className="px-[5vw] py-28" id="services">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] gap-12 items-end mb-14 reveal">
         <div>
-          <div className="flex items-center gap-3 text-[0.72rem] font-medium tracking-[0.18em] uppercase text-gold mb-4">
+          <div className="eyebrow">
             <span className="inline-block w-6 h-px bg-gold" />
             How It Works
           </div>
-          <h2 className="font-serif text-[clamp(2rem,3.5vw,3rem)] font-light leading-[1.2] text-cream">
-            Three ways<br />we <em className="italic text-gold-light">work together</em>
+          <h2 className="section-title">
+            Three ways we <span className="text-gold">work together</span>
           </h2>
         </div>
-        <p className="text-[1.05rem] text-cream/65 leading-[1.8]">
+        <p className="text-[1.05rem] text-muted-text leading-[1.8]">
           Most clients start with a Diagnostic — a focused session where we map your operations, identify the real problem, and decide together what the right solution looks like. From there, we build it, then stay involved as it grows. You don't need to know anything about technology. You just need to know your business.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {services.map((s) => (
-          <div key={s.num} className="group glass-panel rounded-sm p-8 relative overflow-hidden hover:border-gold/35 hover:-translate-y-1 hover:shadow-glass transition-all duration-300">
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300" />
-            <div className="font-serif text-5xl font-light text-gold/20 leading-none mb-4">{s.num}</div>
-            <div className="font-serif text-[1.45rem] text-cream mb-2">{s.name}</div>
-            <span className="inline-block text-[0.7rem] font-semibold tracking-[0.12em] uppercase text-gold bg-gold/10 border border-gold/25 px-2.5 py-0.5 rounded-sm mb-5">
+        {services.map((s, i) => (
+          <div
+            key={s.num}
+            className="glass-panel lift-card reveal rounded-[1.4rem] p-8"
+            style={{ ["--reveal-delay" as string]: `${i * 100}ms` }}
+          >
+            <div className="text-[2.6rem] font-semibold text-gold/25 leading-none mb-5">{s.num}</div>
+            <div className="text-[1.35rem] font-semibold text-cream mb-3">{s.name}</div>
+            <span className="inline-block text-[0.72rem] font-semibold tracking-[0.06em] uppercase text-gold bg-gold-pale border border-gold/20 px-3 py-1 rounded-full mb-5">
               {s.tag}
             </span>
-            <p className="text-[0.9rem] text-cream/60 leading-[1.75]">{s.desc}</p>
+            <p className="text-[0.95rem] text-muted-text leading-[1.75]">{s.desc}</p>
           </div>
         ))}
       </div>

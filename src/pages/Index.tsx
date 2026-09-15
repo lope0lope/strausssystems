@@ -8,7 +8,10 @@ import AboutSection from "@/components/AboutSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
+import { useReveal } from "@/hooks/useReveal";
+
 const Index = () => {
+  useReveal();
   return (
     <>
       <Helmet>

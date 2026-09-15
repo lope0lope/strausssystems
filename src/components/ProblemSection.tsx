@@ -7,31 +7,37 @@ const problemQuotes = [
 
 const ProblemSection = () => {
   return (
-    <section className="bg-ink-soft px-[5vw] py-24" id="problem">
-      <div className="flex items-center gap-3 text-[0.72rem] font-medium tracking-[0.18em] uppercase text-gold mb-4">
-        <span className="inline-block w-6 h-px bg-gold" />
-        The Problem
+    <section className="bg-background px-[5vw] py-28" id="problem">
+      <div className="reveal">
+        <div className="eyebrow">
+          <span className="inline-block w-6 h-px bg-gold" />
+          The Problem
+        </div>
+        <h2 className="section-title">
+          Sound <span className="text-gold">familiar?</span>
+        </h2>
       </div>
-      <h2 className="font-serif text-[clamp(2rem,3.5vw,3rem)] font-light leading-[1.2] text-cream">
-        Sound <em className="italic text-gold-light">familiar?</em>
-      </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center mt-16">
-        <div className="space-y-5">
-          <p className="text-[1.05rem] text-cream/75 leading-[1.85]">
-            Most business owners we work with are running operations that depend entirely on them being in the room. <strong className="text-cream font-medium">They've got systems held together with WhatsApp messages, spreadsheets nobody else understands, and manual processes that eat hours every week.</strong>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center mt-14">
+        <div className="space-y-5 reveal">
+          <p className="text-[1.05rem] text-muted-text leading-[1.8]">
+            Most business owners we work with are running operations that depend entirely on them being in the room. <strong className="text-cream font-semibold">They've got systems held together with WhatsApp messages, spreadsheets nobody else understands, and manual processes that eat hours every week.</strong>
           </p>
-          <p className="text-[1.05rem] text-cream/75 leading-[1.85]">
+          <p className="text-[1.05rem] text-muted-text leading-[1.8]">
             They know it's costing them. They've just never found someone who could fix it without making it complicated, expensive, or someone else's problem to maintain.
           </p>
-          <p className="text-[1.05rem] text-cream/75 leading-[1.85]">
-            That's exactly what we do. We sit down with you, understand how your business actually works, and <strong className="text-cream font-medium">build the tools that let it run without you having to carry it every day.</strong>
+          <p className="text-[1.05rem] text-muted-text leading-[1.8]">
+            That's exactly what we do. We sit down with you, understand how your business actually works, and <strong className="text-cream font-semibold">build the tools that let it run without you having to carry it every day.</strong>
           </p>
         </div>
         <div className="flex flex-col gap-4">
           {problemQuotes.map((quote, i) => (
-            <div key={i} className="glass-panel border-l-[3px] border-l-gold rounded-sm px-6 py-5 hover:border-l-gold-light hover:-translate-y-1 transition-all duration-300">
-              <p className="text-[0.95rem] text-cream/70 leading-[1.65]">"{quote}"</p>
+            <div
+              key={i}
+              className="glass-panel lift-card reveal border-l-[3px] border-l-gold rounded-[1.1rem] px-6 py-5"
+              style={{ ["--reveal-delay" as string]: `${i * 100}ms` }}
+            >
+              <p className="text-[0.98rem] text-cream-mid leading-[1.65]">"{quote}"</p>
             </div>
           ))}
         </div>

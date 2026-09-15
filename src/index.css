@@ -1,55 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 30 11% 5%;
-    --foreground: 37 30% 93%;
+    /* Apple-inspired light system */
+    --background: 0 0% 100%;
+    --foreground: 240 6% 12%;
 
-    --ink: 30 11% 5%;
-    --ink-soft: 33 12% 10%;
-    --ink-mid: 33 10% 16%;
-    --gold: 38 70% 47%;
-    --gold-light: 36 68% 63%;
-    --gold-pale: 36 68% 88%;
-    --cream: 37 30% 93%;
-    --cream-mid: 33 20% 86%;
-    --muted-text: 30 8% 44%;
+    /* surfaces (kept under the historical names) */
+    --ink: 0 0% 100%;
+    --ink-soft: 240 20% 97%;
+    --ink-mid: 240 14% 93%;
 
-    --card: 33 12% 10%;
-    --card-foreground: 37 30% 93%;
-    --popover: 33 12% 10%;
-    --popover-foreground: 37 30% 93%;
-    --primary: 38 70% 47%;
-    --primary-foreground: 30 11% 5%;
-    --secondary: 33 12% 10%;
-    --secondary-foreground: 37 30% 93%;
-    --muted: 33 12% 10%;
-    --muted-foreground: 30 8% 44%;
-    --accent: 38 70% 47%;
-    --accent-foreground: 30 11% 5%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 38 30% 15%;
-    --input: 38 30% 15%;
-    --ring: 38 70% 47%;
-    --radius: 0.25rem;
-    --glass-shadow: 0 18px 48px -24px hsl(30 11% 2% / 0.9), 0 1px 0 hsl(37 30% 93% / 0.04) inset;
+    /* accent: restrained system blue */
+    --gold: 211 100% 45%;
+    --gold-light: 211 100% 52%;
+    --gold-pale: 211 100% 96%;
 
-    --sidebar-background: 33 12% 10%;
-    --sidebar-foreground: 37 30% 93%;
-    --sidebar-primary: 38 70% 47%;
-    --sidebar-primary-foreground: 30 11% 5%;
-    --sidebar-accent: 33 10% 16%;
-    --sidebar-accent-foreground: 37 30% 93%;
-    --sidebar-border: 38 30% 15%;
-    --sidebar-ring: 38 70% 47%;
+    /* text */
+    --cream: 240 6% 12%;
+    --cream-mid: 240 3% 26%;
+    --muted-text: 240 2% 46%;
 
-    --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'Outfit', sans-serif;
+    --card: 0 0% 100%;
+    --card-foreground: 240 6% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 6% 12%;
+    --primary: 211 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 20% 97%;
+    --secondary-foreground: 240 6% 12%;
+    --muted: 240 20% 97%;
+    --muted-foreground: 240 2% 46%;
+    --accent: 211 100% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 88%;
+    --input: 240 6% 88%;
+    --ring: 211 100% 45%;
+    --radius: 0.85rem;
+    --glass-shadow: 0 20px 50px -30px hsl(240 20% 20% / 0.35), 0 1px 0 hsl(0 0% 100% / 0.6) inset;
+    --glass-shadow-lift: 0 30px 70px -30px hsl(240 20% 20% / 0.45), 0 1px 0 hsl(0 0% 100% / 0.7) inset;
+
+    --sidebar-background: 240 20% 97%;
+    --sidebar-foreground: 240 6% 12%;
+    --sidebar-primary: 211 100% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 14% 93%;
+    --sidebar-accent-foreground: 240 6% 12%;
+    --sidebar-border: 240 6% 88%;
+    --sidebar-ring: 211 100% 45%;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-serif: var(--font-sans);
+    --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
@@ -59,23 +65,27 @@
   }
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
   }
   body {
     font-family: var(--font-sans);
     font-weight: 400;
-    line-height: 1.7;
+    line-height: 1.6;
     @apply bg-background text-foreground;
     overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    letter-spacing: -0.022em;
   }
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-up {
-  animation: fadeUp 0.6s ease both;
+  animation: fadeUp 0.8s var(--ease-premium) both;
 }
 .animate-delay-100 { animation-delay: 0.1s; }
 .animate-delay-200 { animation-delay: 0.2s; }
@@ -83,9 +93,59 @@
 .animate-delay-400 { animation-delay: 0.4s; }
 .animate-delay-350 { animation-delay: 0.35s; }
 
+/* scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s var(--ease-premium), transform 0.8s var(--ease-premium);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .animate-fade-up { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
 @layer components {
   .glass-panel {
-    @apply bg-card/65 border border-cream/10 backdrop-blur-xl shadow-glass;
+    @apply bg-card/70 border border-cream/10 backdrop-blur-xl shadow-glass;
+  }
+  .lift-card {
+    transition: transform 250ms var(--ease-premium), box-shadow 250ms var(--ease-premium), border-color 250ms var(--ease-premium);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .lift-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--glass-shadow-lift);
+    }
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-gold text-primary-foreground text-[0.95rem] font-medium px-7 py-3.5 no-underline rounded-full;
+    transition: transform 250ms var(--ease-premium), background-color 250ms var(--ease-premium), box-shadow 250ms var(--ease-premium);
+  }
+  .btn-primary:hover {
+    @apply bg-gold-light;
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px -12px hsl(var(--gold) / 0.7);
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center text-cream text-[0.95rem] font-medium px-7 py-3.5 no-underline rounded-full border border-cream/15 bg-card/60 backdrop-blur-xl;
+    transition: transform 250ms var(--ease-premium), border-color 250ms var(--ease-premium), color 250ms var(--ease-premium);
+  }
+  .btn-ghost:hover {
+    @apply border-gold/50 text-gold;
+    transform: scale(1.02);
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[0.78rem] font-semibold tracking-[0.06em] uppercase text-gold mb-4;
+  }
+  .section-title {
+    @apply text-[clamp(2rem,3.6vw,3.2rem)] font-semibold leading-[1.08] text-cream;
   }
 }
 

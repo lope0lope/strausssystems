@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Outfit', 'sans-serif'],
+        serif: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -84,6 +84,7 @@ export default {
       },
       boxShadow: {
         glass: "var(--glass-shadow)",
+        "glass-lift": "var(--glass-shadow-lift)",
       },
       keyframes: {
         "accordion-down": {
