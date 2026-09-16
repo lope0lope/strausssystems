@@ -14,14 +14,15 @@ const HeroSection = () => {
     <section
       ref={ref}
       id="hero"
-      className="relative overflow-hidden px-[5vw] pt-36 pb-24 md:min-h-[92vh] flex items-center bg-ink-soft"
+      className="hero-pattern relative isolate overflow-hidden px-[5vw] pt-36 pb-24 md:min-h-[92vh] flex items-center bg-ink-soft"
     >
-      {/* soft depth blobs */}
-      <div className="pointer-events-none absolute -top-[20%] -right-[10%] w-[60vw] h-[80vh] rounded-full bg-[radial-gradient(circle_at_center,_hsl(var(--gold)/0.14),_transparent_65%)] blur-2xl" />
-      <div className="pointer-events-none absolute -bottom-[30%] -left-[15%] w-[55vw] h-[70vh] rounded-full bg-[radial-gradient(circle_at_center,_hsl(var(--gold)/0.08),_transparent_65%)] blur-2xl" />
+      <div className="hero-pattern__field hero-pattern__field--one" aria-hidden="true" />
+      <div className="hero-pattern__field hero-pattern__field--two" aria-hidden="true" />
+      <div className="hero-pattern__grid" aria-hidden="true" />
+      <div className="hero-pattern__grain" aria-hidden="true" />
       {/* cursor spotlight (pointer devices set --mx/--my) */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-70"
+        className="pointer-events-none absolute inset-0 -z-[1] opacity-70"
         style={{
           background:
             "radial-gradient(360px circle at var(--mx, -400px) var(--my, -400px), hsl(var(--gold) / 0.10), transparent 70%)",
