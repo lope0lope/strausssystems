@@ -99,6 +99,11 @@
   to { background-position: 56px 32px, 32px 56px; }
 }
 
+@keyframes carouselEnter {
+  from { opacity: 0; transform: translate3d(18px, 0, 0) scale(0.992); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
 .hero-pattern::after {
   content: "";
   position: absolute;
@@ -157,6 +162,12 @@
   background-image: radial-gradient(hsl(var(--gold) / 0.24) 0.65px, transparent 0.65px);
   background-size: 14px 14px;
   mask-image: linear-gradient(105deg, transparent 10%, black 48%, transparent 88%);
+  transform: translate3d(0, calc(var(--scroll-depth, 0) * 28px), 0);
+  transition: transform 180ms linear;
+}
+
+.carousel-enter {
+  animation: carouselEnter 520ms var(--ease-premium) both;
 }
 
 .animate-fade-up {
@@ -185,6 +196,8 @@
   .animate-fade-up { animation: none; }
   .hero-pattern__field,
   .hero-pattern__grid { animation: none; }
+  .hero-pattern__grain { transform: none; transition: none; }
+  .carousel-enter { animation: none; }
   html { scroll-behavior: auto; }
 }
 
@@ -194,7 +207,8 @@
     box-shadow: var(--glass-shadow), 0 0 0 1px hsl(var(--cream) / 0.04) inset;
   }
   .lift-card {
-    transition: transform 250ms var(--ease-premium), box-shadow 250ms var(--ease-premium), border-color 250ms var(--ease-premium);
+    transform: translateZ(0);
+    transition: transform 420ms var(--ease-premium), box-shadow 420ms var(--ease-premium), border-color 320ms var(--ease-premium), background-color 320ms var(--ease-premium);
   }
   @media (hover: hover) and (pointer: fine) {
     .lift-card:hover {
@@ -203,21 +217,45 @@
     }
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center bg-gold text-primary-foreground text-[0.95rem] font-medium px-7 py-3.5 no-underline rounded-full;
-    transition: transform 250ms var(--ease-premium), background-color 250ms var(--ease-premium), box-shadow 250ms var(--ease-premium);
+    @apply relative isolate overflow-hidden inline-flex items-center justify-center bg-gold text-primary-foreground text-[0.95rem] font-medium px-7 py-3.5 no-underline rounded-full;
+    transition: transform 420ms var(--ease-premium), background-color 300ms var(--ease-premium), box-shadow 420ms var(--ease-premium);
+  }
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 30%, hsl(var(--primary-foreground) / 0.34) 48%, transparent 66%);
+    transform: translateX(-120%);
+    transition: transform 700ms var(--ease-premium);
   }
   .btn-primary:hover {
     @apply bg-gold-light;
     transform: scale(1.02);
     box-shadow: 0 10px 30px -12px hsl(var(--gold) / 0.7);
   }
+  .btn-primary:hover::after { transform: translateX(120%); }
+  .btn-primary:active { transform: scale(0.975); transition-duration: 90ms; }
   .btn-ghost {
     @apply inline-flex items-center justify-center text-cream text-[0.95rem] font-medium px-7 py-3.5 no-underline rounded-full border border-cream/15 bg-card/60 backdrop-blur-xl;
-    transition: transform 250ms var(--ease-premium), border-color 250ms var(--ease-premium), color 250ms var(--ease-premium);
+    transition: transform 420ms var(--ease-premium), border-color 300ms var(--ease-premium), color 300ms var(--ease-premium), box-shadow 420ms var(--ease-premium);
   }
   .btn-ghost:hover {
     @apply border-gold/50 text-gold;
     transform: scale(1.02);
+    box-shadow: 0 12px 30px -20px hsl(var(--gold) / 0.55);
+  }
+  .btn-ghost:active { transform: scale(0.975); transition-duration: 90ms; }
+  .motion-control {
+    transition: transform 360ms var(--ease-premium), color 280ms var(--ease-premium), border-color 280ms var(--ease-premium), background-color 280ms var(--ease-premium), box-shadow 360ms var(--ease-premium);
+  }
+  .motion-control:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -18px hsl(var(--cream) / 0.5); }
+  .motion-control:active { transform: scale(0.92); transition-duration: 80ms; }
+  .btn-primary:focus-visible,
+  .btn-ghost:focus-visible,
+  .motion-control:focus-visible {
+    outline: 3px solid hsl(var(--ring) / 0.28);
+    outline-offset: 3px;
   }
   .eyebrow {
     @apply inline-flex items-center gap-3 text-[0.78rem] font-semibold tracking-[0.06em] uppercase text-gold mb-4;
