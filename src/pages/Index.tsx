@@ -9,9 +9,11 @@ import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
 import { useReveal } from "@/hooks/useReveal";
+import { usePremiumMotion } from "@/hooks/usePremiumMotion";
 
 const Index = () => {
   useReveal();
+  usePremiumMotion();
   return (
     <>
       <Helmet>

@@ -136,7 +136,7 @@ const CasesSection = () => {
                 type="button"
                 onClick={() => go(-1)}
                 aria-label="Previous case study"
-                className="w-9 h-9 grid place-items-center rounded-full border border-cream/15 bg-card/70 text-cream hover:border-gold hover:text-gold transition-colors"
+                className="motion-control w-9 h-9 grid place-items-center rounded-full border border-cream/15 bg-card/70 text-cream hover:border-gold hover:text-gold"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -144,14 +144,14 @@ const CasesSection = () => {
                 type="button"
                 onClick={() => go(1)}
                 aria-label="Next case study"
-                className="w-9 h-9 grid place-items-center rounded-full border border-cream/15 bg-card/70 text-cream hover:border-gold hover:text-gold transition-colors"
+                className="motion-control w-9 h-9 grid place-items-center rounded-full border border-cream/15 bg-card/70 text-cream hover:border-gold hover:text-gold"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[1.3rem] border border-cream/10 bg-card shadow-glass">
+          <div key={current.id} className="carousel-enter relative overflow-hidden rounded-[1.3rem] border border-cream/10 bg-card shadow-glass">
             {current.kind === "story" ? (
               <StoryCard story={current.story} />
             ) : (
@@ -175,7 +175,7 @@ const CasesSection = () => {
                 type="button"
                 onClick={() => setIndex(i)}
                 aria-current={i === index}
-                className={`text-[0.82rem] px-4 py-2 rounded-full border transition-colors ${
+                className={`motion-control text-[0.82rem] px-4 py-2 rounded-full border ${
                   i === index
                     ? "bg-gold border-gold text-primary-foreground font-medium"
                     : "bg-card/70 border-cream/15 text-muted-text hover:text-cream hover:border-gold/50"
