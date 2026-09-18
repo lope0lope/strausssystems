@@ -7,18 +7,19 @@ const problemQuotes = [
 
 const ProblemSection = () => {
   return (
-    <section className="bg-background px-[5vw] py-28" id="problem">
-      <div className="reveal">
+    <section className="section-band bg-background" id="problem">
+      <div className="site-shell">
+      <div className="reveal max-w-[760px]">
         <div className="eyebrow">
           <span className="inline-block w-6 h-px bg-gold" />
           The Problem
         </div>
         <h2 className="section-title">
-          Sound <span className="text-gold">familiar?</span>
+          What we keep hearing.
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center mt-14">
+      <div className="grid grid-cols-1 lg:grid-cols-[0.78fr_1.22fr] gap-16 lg:gap-24 mt-16">
         <div className="space-y-5 reveal">
           <p className="text-[1.05rem] text-muted-text leading-[1.8]">
             Most business owners we work with are running operations that depend entirely on them being in the room. <strong className="text-cream font-semibold">They've got systems held together with WhatsApp messages, spreadsheets nobody else understands, and manual processes that eat hours every week.</strong>
@@ -30,18 +31,19 @@ const ProblemSection = () => {
             That's exactly what we do. We sit down with you, understand how your business actually works, and <strong className="text-cream font-semibold">build the tools that let it run without you having to carry it every day.</strong>
           </p>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="border-t border-foreground/20">
           {problemQuotes.map((quote, i) => (
             <div
               key={i}
-              className="glass-panel lift-card reveal border-l-[3px] border-l-gold rounded-[1.1rem] px-6 py-5"
+              className="reveal grid grid-cols-[3rem_1fr] gap-4 border-b border-foreground/20 py-7"
               style={{ ["--reveal-delay" as string]: `${i * 100}ms` }}
             >
-              <p className="text-[0.98rem] text-cream-mid leading-[1.65]">"{quote}"</p>
+              <span className="technical-label text-gold">0{i + 1}</span>
+              <p className="text-[clamp(1.1rem,1.7vw,1.45rem)] text-cream leading-[1.45]">{quote}</p>
             </div>
           ))}
         </div>
-      </div>
+      </div></div>
     </section>
   );
 };
