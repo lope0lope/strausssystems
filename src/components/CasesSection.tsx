@@ -1,192 +1,134 @@
-import { useEffect, useState } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowUpRight, Monitor, Smartphone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { caseStudies, type CaseStudy } from "@/content/caseStudies";
 
-type WorkPost = {
-  id: string;
-  title: string;
-  html: string;
-};
-
-type Slide =
-  | { kind: "story"; id: string; title: string; story: CaseStudy }
-  | { kind: "post"; id: string; title: string; html: string };
+type WorkPost = { id: string; title: string; html: string };
 
 const withAutoHeight = (html: string, id: string) => {
-  const script = `<script>(function(){
-    var id=${JSON.stringify(id)};
-    function send(){
-      var d=document.documentElement, b=document.body;
-      var h=Math.max(d.scrollHeight,b?b.scrollHeight:0,d.offsetHeight,b?b.offsetHeight:0);
-      parent.postMessage({__postHeight:true,id:id,height:h},'*');
-    }
-    window.addEventListener('load',send);
-    window.addEventListener('resize',send);
-    if(window.ResizeObserver){new ResizeObserver(send).observe(document.documentElement);}
-    setInterval(send,500);
-    send();
-  })();<\/script>`;
+  const script = `<script>(function(){var id=${JSON.stringify(id)};function send(){var d=document.documentElement,b=document.body;var h=Math.max(d.scrollHeight,b?b.scrollHeight:0,d.offsetHeight,b?b.offsetHeight:0);parent.postMessage({__postHeight:true,id:id,height:h},'*')}window.addEventListener('load',send);window.addEventListener('resize',send);if(window.ResizeObserver){new ResizeObserver(send).observe(document.documentElement)}setInterval(send,500);send()})();<\/script>`;
   return html.includes("</body>") ? html.replace("</body>", script + "</body>") : html + script;
 };
 
-const StoryCard = ({ story }: { story: CaseStudy }) => (
-  <div className="p-8 sm:p-12">
-    <div className="text-[0.78rem] font-semibold tracking-[0.06em] uppercase text-gold mb-4">{story.name}</div>
-    <h3 className="text-[clamp(1.6rem,2.6vw,2.4rem)] font-semibold leading-[1.1] text-cream mb-5 max-w-[16ch]">
-      {story.headline}
-    </h3>
-    <p className="text-[1.05rem] text-muted-text leading-[1.75] max-w-[60ch] mb-8">{story.oneLiner}</p>
+const projectOrder = ["easy-shelf-point", "hospital-workflow", "kzn-auction", "croctrack"];
+const visualType: Record<string, "phone" | "browser"> = {
+  "easy-shelf-point": "phone",
+  "hospital-workflow": "browser",
+  "kzn-auction": "browser",
+  croctrack: "phone",
+};
 
-    <div className="inline-flex items-center rounded-full bg-gold-pale border border-gold/20 px-5 py-2 text-[0.92rem] font-medium text-gold mb-9">
-      {story.stat}
-    </div>
-
-    <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-4 sm:gap-6 items-center">
-      <div className="rounded-[1.1rem] border border-cream/10 bg-ink-soft p-5">
-        <div className="text-[0.72rem] uppercase tracking-[0.08em] text-muted-text mb-2">Before</div>
-        <p className="text-[0.98rem] text-cream-mid leading-snug">{story.before}</p>
-      </div>
-      <ArrowRight className="w-5 h-5 text-gold mx-auto rotate-90 sm:rotate-0" aria-hidden />
-      <div className="rounded-[1.1rem] border border-gold/25 bg-gold-pale p-5">
-        <div className="text-[0.72rem] uppercase tracking-[0.08em] text-gold mb-2">After</div>
-        <p className="text-[0.98rem] text-cream leading-snug font-medium">{story.after}</p>
-      </div>
-    </div>
-  </div>
-);
-
-const CasesSection = () => {
-  const [posts, setPosts] = useState<WorkPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [index, setIndex] = useState(0);
-  const [heights, setHeights] = useState<Record<string, number>>({});
-
-  useEffect(() => {
-    const onMsg = (e: MessageEvent) => {
-      const d = e.data;
-      if (d && d.__postHeight && typeof d.height === "number" && d.height > 0) {
-        setHeights((prev) =>
-          Math.abs((prev[d.id] ?? 0) - d.height) > 2 ? { ...prev, [d.id]: d.height } : prev
-        );
-      }
-    };
-    window.addEventListener("message", onMsg);
-    return () => window.removeEventListener("message", onMsg);
-  }, []);
-
-  useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase
-        .from("work_posts")
-        .select("id,title,html")
-        .eq("published", true)
-        .order("sort_order", { ascending: true })
-        .order("created_at", { ascending: false });
-      setPosts(data ?? []);
-      setLoading(false);
-    };
-    load();
-  }, []);
-
-  const slides: Slide[] = [
-    ...caseStudies.map<Slide>((s) => ({ kind: "story", id: s.id, title: s.name, story: s })),
-    ...posts.map<Slide>((p) => ({ kind: "post", id: p.id, title: p.title, html: p.html })),
-  ];
-
-  const count = slides.length;
-  const go = (dir: number) => setIndex((i) => (i + dir + count) % count);
-  const current = slides[Math.min(index, count - 1)];
-
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
-    if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
-  };
-
+const ProjectVisual = ({ story }: { story: CaseStudy }) => {
+  const phone = visualType[story.id] === "phone";
   return (
-    <section className="bg-ink-soft px-[5vw] py-28" id="work">
-      <div className="reveal">
-        <div className="eyebrow">
-          <span className="inline-block w-6 h-px bg-gold" />
-          Our Work
+    <div className={`project-visual ${phone ? "project-visual--phone" : "project-visual--browser"}`}>
+      {phone ? (
+        <div className="phone-frame" aria-label={`Placeholder for a ${story.name} app screenshot`}>
+          <div className="phone-speaker" />
+          <div className="phone-screen">
+            <div className="mock-kicker">{story.name}</div>
+            <div className="mock-heading">Operations</div>
+            <div className="mock-metrics"><span /><span /></div>
+            <div className="mock-rows"><span /><span /><span /><span /></div>
+          </div>
         </div>
-        <h2 className="section-title">
-          Problems solved. <span className="text-gold">Results delivered.</span>
-        </h2>
-      </div>
-
-      {loading && count === 0 ? (
-        <div className="mt-12 h-[420px] rounded-[1.6rem] glass-panel animate-pulse" />
       ) : (
-        <div
-          className="mt-12 glass-panel rounded-[1.6rem] p-3 sm:p-5 reveal"
-          role="group"
-          aria-roledescription="carousel"
-          aria-label="Case studies"
-          tabIndex={0}
-          onKeyDown={onKeyDown}
-        >
-          <div className="flex items-center justify-between gap-4 mb-4 px-2">
-            <h3 className="text-[1.05rem] font-semibold text-cream truncate">{current.title}</h3>
-            <div className="flex items-center gap-3 shrink-0">
-              <span className="text-[0.8rem] text-muted-text tabular-nums">
-                {String(index + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
-              </span>
-              <button
-                type="button"
-                onClick={() => go(-1)}
-                aria-label="Previous case study"
-                className="motion-control w-9 h-9 grid place-items-center rounded-full border border-cream/15 bg-card/70 text-cream hover:border-gold hover:text-gold"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => go(1)}
-                aria-label="Next case study"
-                className="motion-control w-9 h-9 grid place-items-center rounded-full border border-cream/15 bg-card/70 text-cream hover:border-gold hover:text-gold"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+        <div className="product-window" aria-label={`Placeholder for a ${story.name} interface screenshot`}>
+          <div className="window-bar"><span /><span /><span /><small>{story.name}</small></div>
+          <div className="window-body">
+            <div className="mock-sidebar" />
+            <div className="mock-dashboard">
+              <div className="mock-kicker">SYSTEM OVERVIEW</div>
+              <div className="mock-heading">Live workflow</div>
+              <div className="mock-metrics"><span /><span /><span /></div>
+              <div className="mock-chart"><i /><i /><i /><i /><i /><i /></div>
+              <div className="mock-rows"><span /><span /><span /></div>
             </div>
-          </div>
-
-          <div key={current.id} className="carousel-enter relative overflow-hidden rounded-[1.3rem] border border-cream/10 bg-card shadow-glass">
-            {current.kind === "story" ? (
-              <StoryCard story={current.story} />
-            ) : (
-              <iframe
-                key={current.id}
-                title={current.title}
-                srcDoc={withAutoHeight(current.html, current.id)}
-                sandbox="allow-scripts allow-popups"
-                loading="lazy"
-                scrolling="no"
-                style={{ height: heights[current.id] ?? 820 }}
-                className="w-full border-0 block overflow-hidden"
-              />
-            )}
-          </div>
-
-          <div className="flex flex-wrap gap-2 mt-5">
-            {slides.map((s, i) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setIndex(i)}
-                aria-current={i === index}
-                className={`motion-control text-[0.82rem] px-4 py-2 rounded-full border ${
-                  i === index
-                    ? "bg-gold border-gold text-primary-foreground font-medium"
-                    : "bg-card/70 border-cream/15 text-muted-text hover:text-cream hover:border-gold/50"
-                }`}
-              >
-                {s.title}
-              </button>
-            ))}
           </div>
         </div>
       )}
+      <div className="visual-caption">Screenshot placeholder · replace when ready</div>
+    </div>
+  );
+};
+
+const CasesSection = () => {
+  const [posts, setPosts] = useState<WorkPost[]>([]);
+  const [openPost, setOpenPost] = useState<WorkPost | null>(null);
+  const [heights, setHeights] = useState<Record<string, number>>({});
+  const stories = useMemo(() => projectOrder.map((id) => caseStudies.find((story) => story.id === id)).filter((story): story is CaseStudy => Boolean(story)), []);
+
+  useEffect(() => {
+    supabase.from("work_posts").select("id,title,html").eq("published", true).order("sort_order", { ascending: true }).order("created_at", { ascending: false }).then(({ data }) => setPosts(data ?? []));
+  }, []);
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      const data = event.data;
+      if (data && data.__postHeight && typeof data.height === "number" && data.height > 0) {
+        setHeights((previous) => Math.abs((previous[data.id] ?? 0) - data.height) > 2 ? { ...previous, [data.id]: data.height } : previous);
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
+  const matchingPost = (story: CaseStudy) => posts.find((post) => {
+    const haystack = `${post.title} ${story.name}`.toLowerCase();
+    return story.name.toLowerCase().split(" ").some((word) => word.length > 4 && post.title.toLowerCase().includes(word)) || haystack.includes(story.id.replace(/-/g, " "));
+  });
+
+  return (
+    <section className="section-band bg-dark text-dark-foreground" id="work">
+      <div className="site-shell">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.7fr_1.3fr] gap-10 items-end mb-20 reveal">
+          <div className="eyebrow text-gold"><span className="inline-block w-6 h-px bg-gold" />Our Work</div>
+          <h2 className="section-title text-dark-foreground">Systems built around real operations, not templates.</h2>
+        </div>
+
+        <div className="space-y-28 lg:space-y-36">
+          {stories.map((story, index) => {
+            const post = matchingPost(story);
+            return (
+              <article key={story.id} id={`case-${story.id}`} className={`project-feature reveal ${index % 2 ? "project-feature--reverse" : ""}`}>
+                <ProjectVisual story={story} />
+                <div className="project-copy">
+                  <div className="technical-label text-gold">0{index + 1} / {story.name}</div>
+                  <h3>{story.headline}</h3>
+                  <p>{story.oneLiner}</p>
+                  <div className="project-outcome"><span>Outcome</span><strong>{story.stat}</strong></div>
+                  <div className="before-after"><span><small>Before</small>{story.before}</span><span><small>After</small>{story.after}</span></div>
+                  {post ? (
+                    <Button variant="link" className="case-link" onClick={() => setOpenPost(post)}>View case study <ArrowUpRight /></Button>
+                  ) : (
+                    <a href={`#case-${story.id}`} className="case-link" aria-label={`View ${story.name} case study details`}>View case study <ArrowUpRight /></a>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {openPost && (
+          <div className="published-post reveal" id="published-case-study">
+            <div className="flex items-center justify-between gap-5 border-b border-dark-foreground/15 px-5 py-4">
+              <h3 className="text-lg font-semibold">{openPost.title}</h3>
+              <Button variant="ghost" className="text-dark-foreground hover:text-gold" onClick={() => setOpenPost(null)}>Close</Button>
+            </div>
+            <iframe title={openPost.title} srcDoc={withAutoHeight(openPost.html, openPost.id)} sandbox="allow-scripts allow-popups" scrolling="no" style={{ height: heights[openPost.id] ?? 820 }} className="block w-full border-0 bg-background" />
+          </div>
+        )}
+
+        {posts.length > 0 && (
+          <div className="mt-24 border-t border-dark-foreground/15 pt-8">
+            <div className="technical-label text-dark-muted mb-5">Published case studies</div>
+            <div className="flex flex-wrap gap-x-8 gap-y-4">
+              {posts.map((post) => <Button key={post.id} variant="link" className="case-link" onClick={() => setOpenPost(post)}>{post.title} <ArrowUpRight /></Button>)}
+            </div>
+          </div>
+        )}
+      </div>
     </section>
   );
 };
