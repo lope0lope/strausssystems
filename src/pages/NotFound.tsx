@@ -26,13 +26,14 @@ const NotFound = () => {
         />
         <meta property="og:url" content="https://strausssystems.lovable.app/404" />
       </Helmet>
-      <main className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-center">
-          <h1 className="mb-4 text-4xl font-bold text-foreground">404</h1>
-          <p className="mb-4 text-xl text-foreground">Oops! Page not found</p>
-          <a href="/" className="text-primary underline hover:text-primary/90">
-            Return to Home
-          </a>
+      <main className="flex min-h-screen items-center bg-ink-soft">
+        <div className="site-shell w-full grid md:grid-cols-[0.5fr_1fr] gap-10 items-end">
+          <div className="technical-label text-gold">ERROR / 404</div>
+          <div className="border-t border-foreground/20 pt-8">
+          <h1 className="display-title mb-5">Page not found.</h1>
+          <p className="mb-8 text-xl text-muted-text">The page you're looking for doesn't exist.</p>
+          <a href="/" className="btn-primary">Return home</a>
+          </div>
         </div>
       </main>
     </>

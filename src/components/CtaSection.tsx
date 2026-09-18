@@ -1,19 +1,19 @@
 const CtaSection = () => {
   return (
-    <section className="text-center bg-ink-soft px-[5vw] py-28 relative overflow-hidden" id="contact">
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] rounded-full bg-[radial-gradient(ellipse,_hsl(var(--gold)/0.10)_0%,_transparent_70%)] blur-2xl" />
-      <div className="relative z-10 reveal">
-        <div className="eyebrow justify-center">
+    <section className="section-band bg-dark text-dark-foreground" id="contact">
+      <div className="site-shell grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-end reveal">
+        <div>
+        <div className="eyebrow text-gold">
           <span className="inline-block w-6 h-px bg-gold" />
           Get Started
         </div>
-        <h2 className="section-title max-w-[680px] mx-auto mb-6">
-          Let's talk about your <span className="text-gold">biggest headache</span>
+        <h2 className="section-title text-dark-foreground max-w-[780px] mb-6">
+          Let's talk about your biggest headache.
         </h2>
-        <p className="text-[1.1rem] text-muted-text max-w-[540px] mx-auto mb-9 leading-[1.7]">
+        <p className="text-[1.1rem] text-dark-muted max-w-[620px] leading-[1.7]">
           Book a free 30-minute call. No pitch, no jargon — just a straight conversation about what's frustrating you in your business and whether we can help.
         </p>
-        <div className="flex gap-3 justify-center flex-wrap">
+        </div><div>
           <a
             className="btn-primary"
             href="https://calendly.com/jason-bookings/discover-call"

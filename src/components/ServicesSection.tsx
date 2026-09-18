@@ -21,7 +21,8 @@ const services = [
 
 const ServicesSection = () => {
   return (
-    <section className="px-[5vw] py-28" id="services">
+    <section className="section-band bg-ink-soft" id="services">
+      <div className="site-shell">
       <div className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] gap-12 items-end mb-14 reveal">
         <div>
           <div className="eyebrow">
@@ -37,22 +38,19 @@ const ServicesSection = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="border-t border-foreground/20">
         {services.map((s, i) => (
           <div
             key={s.num}
-            className="glass-panel lift-card reveal rounded-[1.4rem] p-8"
+            className="service-row reveal"
             style={{ ["--reveal-delay" as string]: `${i * 100}ms` }}
           >
-            <div className="text-[2.6rem] font-semibold text-gold/25 leading-none mb-5">{s.num}</div>
-            <div className="text-[1.35rem] font-semibold text-cream mb-3">{s.name}</div>
-            <span className="inline-block text-[0.72rem] font-semibold tracking-[0.06em] uppercase text-gold bg-gold-pale border border-gold/20 px-3 py-1 rounded-full mb-5">
-              {s.tag}
-            </span>
-            <p className="text-[0.95rem] text-muted-text leading-[1.75]">{s.desc}</p>
+            <div className="technical-label text-gold">{s.num} / {s.tag}</div>
+            <h3 className="text-[clamp(1.5rem,2.4vw,2.25rem)] font-semibold text-cream leading-tight">{s.name}</h3>
+            <p className="text-[0.98rem] text-muted-text leading-[1.75] max-w-[58ch]">{s.desc}</p>
           </div>
         ))}
-      </div>
+      </div></div>
     </section>
   );
 };
