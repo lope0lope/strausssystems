@@ -1,43 +1,66 @@
-# Light Apple-inspired redesign and case studies
+# Strauss-Strategies visual system redesign
 
-## Goal
-Refresh Strauss-Strategies into a bright, restrained, Apple-inspired experience while preserving the existing brand logo, enquiry flow, admin-only HTML uploader, and no-pricing rule. Add the four supplied case studies to the work carousel and apply cohesive motion, glass, and cursor interactions across the site.
+## Direction
+Use the selected **Precision corporate minimalism** direction for its disciplined spacing, crisp hierarchy, and engineered feel—but deliberately remove its generic SaaS-blue, pill-heavy, floating-card language.
 
-## What will change
+The new system will feel like a precision engineering studio: warm off-white editorial surfaces, near-black technical sections, graphite text, and the existing champagne-gold brand color used sparingly for rules, focus states, key metrics, and primary actions.
 
-### 1. Visual system
-- Replace the dark ink theme with an Apple-like neutral palette: soft white page surfaces, crisp near-black text, cool grey secondary text, translucent white panels, hairline borders, and a restrained system-blue action color.
-- Use Apple-style system typography (`-apple-system`, BlinkMacSystemFont, SF Pro fallbacks) with stronger weight contrast, precise hierarchy, and generous section spacing.
-- Adapt the existing gold logo for a light navigation surface by placing it on a compact dark brand plate, preserving its legibility and identity.
-- Update the admin and not-found pages to use the same light visual system.
+## Page composition
 
-### 2. Hero and navigation
-- Recompose the first screen around a full-width, softly blurred capture of the real CrocTrack dashboard rather than decorative artwork.
-- Float the navigation and headline treatment over the imagery with restrained translucent glass, readable contrast, and one dominant discovery-call action.
-- Add a very subtle cursor spotlight and shallow background parallax on pointer devices only, with reduced-motion and touch fallbacks.
-- Keep the next section visibly peeking into the first viewport on desktop and mobile.
+### 1. Design system foundation
+- Define semantic CSS tokens for the full palette, spacing scale, section rhythm, border radii, hairline borders, shadows, and motion timing.
+- Use a confident display face for large headlines paired with a clean technical sans for body copy; preserve readability and avoid generic default SaaS typography.
+- Replace large rounded pills with compact rectangular controls, modest corner radii, and precise hover/press states.
+- Remove the blue glow, moving blobs, dot grid, repeated glass panels, and repeated floating-card shadows.
 
-### 3. Native case-study carousel
-- Add the supplied CrocTrack, KZN Auction Platform, Hospital Digital Workflow, and Easy Shelf Point stories as polished native carousel entries.
-- Each entry will show its name, headline, one-line outcome, key statistic, and a clearly structured before-to-after transformation.
-- Preserve existing uploaded HTML posts and their auto-height embedded presentation; future uploads from the post manager will continue to appear in the same work area.
-- Use the existing CrocTrack HTML as the detailed CrocTrack presentation where appropriate, without forcing visitors to scroll inside its frame.
-- Make carousel controls keyboard accessible, touch friendly, and responsive.
+### 2. Navigation and logo
+- Replace the floating pill navigation with a slim, full-width navigation treatment that changes contrast over light and dark sections.
+- Give the supplied gold wordmark a controlled dark brand field rather than a pale pill, with enough size and contrast to remain legible.
+- Keep the existing navigation destinations and Calendly action; add a compact mobile menu rather than hiding navigation without a replacement.
 
-### 4. Motion and interaction
-- Add an IntersectionObserver-based reveal utility for sections and cards: fade from 0 to 1, move up about 20px, and stagger repeated items by roughly 100ms using the requested premium easing.
-- Add restrained card lift, deeper shadow, pointer-proximity border glow, and a very small 3D tilt on desktop pointer devices.
-- Add subtle button scale/glow feedback.
-- Throttle pointer work with `requestAnimationFrame`, avoid permanent `will-change`, and disable nonessential transforms for reduced motion or touch input.
+### 3. Typography-led hero
+- Keep the current headline and supporting copy, but make the headline the dominant first-viewport element.
+- Use a clean split composition: editorial copy on one side and a large, restrained product-interface placeholder on the other.
+- Use a solid or subtly textured background with technical linework only where it supports the composition—no dot grid or gradient blob.
+- Keep one primary booking action and a quieter text-style link to the work section.
 
-### 5. Cohesion and accessibility
-- Apply the light glass treatment consistently to navigation, services, problem statements, work content, and calls to action without nesting decorative cards.
-- Maintain strong text contrast, visible keyboard focus, semantic headings, descriptive image text, and stable dimensions to prevent layout shift.
-- Remove the direct phone action so all enquiries continue through the existing Calendly booking link.
+### 4. “Sound familiar?” section
+- Preserve the current pain-point writing, but label it as **What we keep hearing** and present it as an editorial transcript/list rather than testimonial cards.
+- Use numbered statements, rules, and asymmetric typography so the quotes are clearly illustrative and never imply unattributed customer endorsements.
 
-## Technical details
-- Introduce small reusable interaction wrappers/hooks for reveal, cursor spotlight, and tilt rather than duplicating event logic.
-- Extend semantic color and shadow tokens in the global stylesheet and Tailwind theme; page components will consume only those semantic tokens.
-- Render the four supplied summaries from typed local content, then merge them predictably with live published HTML posts from Lovable Cloud. This avoids destructive data changes and keeps future publishing unchanged.
-- Capture the CrocTrack HTML locally for the hero background asset and optimize it for responsive delivery.
-- Validate the home page and post manager at desktop and mobile widths, including carousel controls, iframe height, reduced motion, overflow, and browser console errors.
+### 5. Services and page rhythm
+- Turn the three services into a sequential, full-width process with large numbers and divider lines instead of three matching cards.
+- Alternate off-white, white, and near-black full-width bands across the page.
+- Use asymmetric columns, strong alignment, and generous whitespace to create distinct pacing from section to section.
+
+### 6. Case-study showcase
+- Replace the text-only native carousel with four large visual project features:
+  1. Easy Shelf Point — retail POS and stock workflow
+  2. Hospital Digital Workflow
+  3. KZN Auction Platform
+  4. CrocTrack — farm operations
+- Give every project a stable browser or phone-frame placeholder, project name, existing headline and one-line description, outcome metric, and **View case study** action.
+- Vary the project layouts between wide browser compositions and mobile-device compositions instead of repeating one card template.
+- Keep future uploaded HTML case studies working. A matching published HTML post will open from the relevant project action; other uploaded posts remain available in the work area without inner scrolling.
+- Build placeholder visuals from neutral interface scaffolds only, clearly ready to swap for supplied screenshots later; do not invent product UI claims.
+
+### 7. Team section
+- Preserve the existing team copy and corporate “we” voice.
+- Create a confident asymmetric layout with a large photography placeholder and a technical-background rail highlighting the already stated experience across engineering, manufacturing, operations, software, physical automation, and hardware.
+- Do not invent names, biographies, credentials, or personal details. The placeholder will be ready for a real team/workshop image later.
+
+### 8. Motion and interaction
+- Retain smooth anchored navigation, but simplify motion to purposeful fade/slide reveals, image-mask entrances, underline sweeps, and controlled button press feedback.
+- Use subtle section-specific movement rather than making every block lift or glow.
+- Preserve keyboard focus, touch behavior, reduced-motion fallbacks, and stable layout dimensions.
+
+### 9. Remaining pages and validation
+- Bring the post manager and not-found page into the same tokenized visual system without changing their functionality.
+- Verify the homepage, navigation, work interactions, uploaded HTML rendering, mobile menu, post manager, and error page at desktop and mobile widths.
+- Check for overflow, overlapping text, broken anchors, contrast issues, console errors, and reduced-motion behavior.
+
+## Technical notes
+- Preserve the current copy, section order, Calendly-only enquiry flow, no-pricing rule, SEO metadata, and existing backend/post-upload behavior.
+- Rework the existing section components and global tokens rather than adding a parallel theme.
+- Use semantic classes backed by CSS custom properties; avoid one-off color values and inline visual styles in page components.
+- Use the existing logo asset and local placeholder compositions; no external stock photography will be invented before real photography is supplied.
