@@ -10,8 +10,7 @@ type WorkPost = {
   id: string;
   title: string;
   description: string | null;
-  project_url: string | null;
-  html: string | null;
+  gif_url: string | null;
   published: boolean;
   sort_order: number;
   created_at: string;
@@ -29,8 +28,7 @@ const Admin = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [projectUrl, setProjectUrl] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [gifFile, setGifFile] = useState<File | null>(null);
   const [posts, setPosts] = useState<WorkPost[]>([]);
 
   useEffect(() => {
@@ -59,7 +57,7 @@ const Admin = () => {
   const loadPosts = async () => {
     const { data } = await supabase
       .from("work_posts")
-      .select("id,title,description,project_url,html,published,sort_order,created_at")
+      .select("id,title,description,gif_url,published,sort_order,created_at")
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false });
     setPosts(data ?? []);
@@ -95,15 +93,20 @@ const Admin = () => {
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!projectUrl.trim() && !file) return toast.error("Add a project URL or choose an HTML file");
-    if (projectUrl.trim() && !/^https?:\/\//i.test(projectUrl.trim())) return toast.error("Project URL must start with http:// or https://");
+    if (!gifFile) return toast.error("Choose a GIF preview to upload");
+    if (gifFile.type !== "image/gif") return toast.error("Preview must be a GIF file");
     setBusy(true);
-    const html = file ? await file.text() : null;
+    const path = `${session?.user.id ?? "admin"}/${crypto.randomUUID()}.gif`;
+    const { error: uploadError } = await supabase.storage.from("project-gifs").upload(path, gifFile, { contentType: "image/gif", upsert: false });
+    if (uploadError) {
+      setBusy(false);
+      return toast.error(uploadError.message);
+    }
+    const { data: publicFile } = supabase.storage.from("project-gifs").getPublicUrl(path);
     const { error } = await supabase.from("work_posts").insert({
-      title: title.trim() || file?.name.replace(/\.html?$/i, "") || projectUrl.trim(),
+      title: title.trim() || gifFile.name.replace(/\.gif$/i, ""),
       description: description.trim() || null,
-      project_url: projectUrl.trim() || null,
-      html,
+      gif_url: publicFile.publicUrl,
       sort_order: posts.length,
       created_by: session?.user.id ?? null,
     });
@@ -112,9 +115,8 @@ const Admin = () => {
     toast.success("Post published to the Our Work carousel");
     setTitle("");
     setDescription("");
-    setProjectUrl("");
-    setFile(null);
-    const fileInput = document.getElementById("html-file") as HTMLInputElement | null;
+    setGifFile(null);
+    const fileInput = document.getElementById("gif-file") as HTMLInputElement | null;
     if (fileInput) fileInput.value = "";
     loadPosts();
   };
@@ -129,6 +131,11 @@ const Admin = () => {
     const { error } = await supabase.from("work_posts").delete().eq("id", p.id);
     if (error) toast.error(error.message);
     else {
+      if (p.gif_url) {
+        const marker = "/storage/v1/object/public/project-gifs/";
+        const storagePath = p.gif_url.split(marker)[1];
+        if (storagePath) await supabase.storage.from("project-gifs").remove([storagePath]);
+      }
       toast.success("Post removed");
       loadPosts();
     }
@@ -189,11 +196,9 @@ const Admin = () => {
                 <input className="admin-input" value={title} placeholder="e.g. CrocTrack - KZN Case Study" onChange={(e) => setTitle(e.target.value)} />
                 <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold pt-2">Short write-up</label>
                 <textarea className="admin-input min-h-28 resize-y" value={description} placeholder="What did this project change?" onChange={(e) => setDescription(e.target.value)} />
-                <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold pt-2">Live project URL</label>
-                <input className="admin-input" type="url" value={projectUrl} placeholder="https://your-project.com" onChange={(e) => setProjectUrl(e.target.value)} />
-                <p className="admin-status">Use a live URL or upload an HTML page below.</p>
-                <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold pt-2">HTML page</label>
-                <input id="html-file" className="admin-input admin-file" type="file" accept=".html,.htm,text/html" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+                <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold pt-2">GIF preview</label>
+                <input id="gif-file" className="admin-input admin-file" type="file" accept="image/gif,.gif" required onChange={(e) => setGifFile(e.target.files?.[0] ?? null)} />
+                <p className="admin-status">Each post gets its own uploaded GIF preview.</p>
                 <button className={`${btnClass} flex items-center gap-2`} disabled={busy} type="submit">
                   <Upload className="w-4 h-4" /> Add project
                 </button>

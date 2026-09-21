@@ -9,13 +9,14 @@ type WorkPost = {
   id: string;
   title: string;
   description: string | null;
+  gif_url: string | null;
 };
 
 type WorkSlide = {
   id: string;
   title: string;
   description: string;
-  gif: string;
+  gif: string | null;
   story?: CaseStudy;
 };
 
@@ -32,7 +33,7 @@ const CasesSection = () => {
   useEffect(() => {
     supabase
       .from("work_posts")
-      .select("id,title,description")
+      .select("id,title,description,gif_url")
       .eq("published", true)
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false })
@@ -44,13 +45,13 @@ const CasesSection = () => {
         id: post.id,
         title: post.title,
         description: post.description || "A project preview from Strauss-Strategies.",
-        gif: "/croc.gif",
+        gif: post.gif_url,
       }))
     : stories.map((story) => ({
         id: story.id,
         title: story.name,
         description: story.oneLiner,
-        gif: story.id === "croctrack" ? "/croc.gif" : "/tablet-preview.svg",
+        gif: story.id === "croctrack" ? "/croc.gif" : null,
         story,
       }));
 
@@ -98,7 +99,7 @@ const CasesSection = () => {
         >
           <div className={`work-carousel__slide work-carousel__slide--${direction}`} key={current.id} aria-live="polite">
             <div className="work-carousel__visual">
-              <Tablet3D title={current.title} gif={current.gif} />
+              <Tablet3D title={current.title} gif={current.gif ?? undefined} />
             </div>
             <div className="project-copy work-carousel__copy">
               <div className="technical-label text-gold">0{activeIndex + 1} / {String(slides.length).padStart(2, "0")}</div>
