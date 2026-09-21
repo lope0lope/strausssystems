@@ -439,7 +439,7 @@
     .tablet3d__hit { display: none; }
   }
 
-  .tablet3d.is-mobile .tablet3d__scene { perspective: none; }
+  .tablet3d.is-mobile .tablet3d__scene { perspective: none; transform-style: flat; }
   .tablet3d.is-mobile .tablet3d__tablet { transform-style: flat; }
   .tablet3d.is-mobile .tablet3d__ring,
   .tablet3d.is-mobile .tablet3d__back,

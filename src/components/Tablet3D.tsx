@@ -127,7 +127,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
     layoutStage(orientation);
     layoutView(orientation);
     if (reduced) {
-      tablet.style.transform = `translate3d(0,0,0) rotateX(${REST.rx}deg) rotateY(${REST.ry}deg) rotateZ(${REST.rz + (orientation === "portrait" ? 90 : 0)}deg)`;
+      tablet.style.transform = `translate3d(0,0,0) rotateZ(${orientation === "portrait" ? 90 : 0}deg)`;
       shadow.style.opacity = "0";
       glass.style.display = "none";
     }
