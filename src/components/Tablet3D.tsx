@@ -23,12 +23,21 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
   const [hover, setHover] = useState(false);
   const [active, setActive] = useState(false);
   const [flipping, setFlipping] = useState(false);
+  const [coarsePointer, setCoarsePointer] = useState(() => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches);
   const hasPreview = Boolean(url || html);
   const activeRef = useRef(active);
 
   useEffect(() => {
     activeRef.current = active;
   }, [active]);
+
+  useEffect(() => {
+    const query = window.matchMedia("(pointer: coarse)");
+    const update = () => setCoarsePointer(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -117,6 +126,11 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
 
     layoutStage(orientation);
     layoutView(orientation);
+    if (reduced) {
+      tablet.style.transform = `translate3d(0,0,0) rotateX(${REST.rx}deg) rotateY(${REST.ry}deg) rotateZ(${REST.rz + (orientation === "portrait" ? 90 : 0)}deg)`;
+      shadow.style.opacity = "0";
+      glass.style.display = "none";
+    }
     const resizeObserver = new ResizeObserver(() => layoutStage(orientation));
     resizeObserver.observe(root);
 
@@ -195,11 +209,11 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
     tablet.addEventListener("pointermove", handleMove);
     tablet.addEventListener("pointerleave", handleLeave);
     document.addEventListener("pointermove", handleDocumentMove, { passive: true });
-    const frameLoop = requestAnimationFrame(animate);
+    const frameLoop = reduced ? 0 : requestAnimationFrame(animate);
 
     return () => {
       running = false;
-      cancelAnimationFrame(frameLoop);
+      if (frameLoop) cancelAnimationFrame(frameLoop);
       window.clearTimeout(leaveTimer);
       resizeObserver.disconnect();
       tablet.removeEventListener("pointerenter", handleEnter);
@@ -218,7 +232,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
   };
 
   return (
-    <div ref={rootRef} className={`tablet3d ${orientation === "portrait" ? "is-portrait" : ""} ${active ? "is-active" : ""} ${hover ? "is-hover" : ""} ${flipping ? "is-flipping" : ""}`} onPointerEnter={() => setHover(true)} onPointerLeave={() => setHover(false)}>
+    <div ref={rootRef} className={`tablet3d ${coarsePointer ? "is-mobile" : ""} ${orientation === "portrait" ? "is-portrait" : ""} ${active ? "is-active" : ""} ${hover ? "is-hover" : ""} ${flipping ? "is-flipping" : ""}`} onPointerEnter={() => setHover(true)} onPointerLeave={() => setHover(false)}>
       <div ref={stageRef} className="tablet3d__stage">
         <div ref={sceneRef} className="tablet3d__scene">
           <div ref={shadowRef} className="tablet3d__shadow" />
@@ -227,7 +241,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
             <div className="tablet3d__front">
               <div className="tablet3d__screen">
                 <div ref={viewRef} className="tablet3d__view">
-                  <iframe ref={frameRef} title={`${title} live preview`} src={url || undefined} srcDoc={url ? undefined : html || undefined} sandbox={url ? undefined : "allow-scripts allow-forms allow-popups"} />
+                  <iframe ref={frameRef} title={`${title} live preview`} src={url && (!coarsePointer || active) ? url : undefined} srcDoc={!url && (!coarsePointer || active) ? html || undefined : undefined} sandbox={url ? undefined : "allow-scripts allow-forms allow-popups"} />
                   {!hasPreview && <div className="tablet3d__empty">Preview ready for a project URL or HTML page</div>}
                   {!active && hasPreview && <button className="tablet3d__hit" type="button" onClick={() => setActive(true)} aria-label={`Interact with ${title} preview`}><span>Click to interact</span></button>}
                   <div className="tablet3d__hint">Click to interact</div>
