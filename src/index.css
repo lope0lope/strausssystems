@@ -248,9 +248,7 @@
     aspect-ratio: 1;
     justify-self: end;
     padding: clamp(1rem, 2.5vw, 2rem);
-    background: hsl(var(--dark));
-    border: 1px solid hsl(var(--foreground) / 0.12);
-    box-shadow: 0 28px 70px -40px hsl(var(--foreground) / 0.7);
+    background: transparent;
     cursor: pointer;
     touch-action: none;
   }
@@ -258,7 +256,7 @@
     width: 100%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: hsl(var(--gold-pale));
+    background: #000;
     will-change: transform;
     transition: transform 240ms var(--ease-premium);
   }

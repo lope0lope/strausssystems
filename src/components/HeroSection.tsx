@@ -16,13 +16,10 @@ const HeroGrid = () => {
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (isBursting || !gridRef.current) return;
 
-    const bounds = gridRef.current.getBoundingClientRect();
-    const pointerX = event.clientX - bounds.left;
-    const pointerY = event.clientY - bounds.top;
-
     gridRef.current.querySelectorAll<HTMLElement>(".hero-grid-cell").forEach((cell) => {
-      const distanceX = pointerX - cell.offsetLeft - cell.offsetWidth / 2;
-      const distanceY = pointerY - cell.offsetTop - cell.offsetHeight / 2;
+      const cellBounds = cell.getBoundingClientRect();
+      const distanceX = event.clientX - (cellBounds.left + cellBounds.width / 2);
+      const distanceY = event.clientY - (cellBounds.top + cellBounds.height / 2);
       const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
       const amount = distance / PULL_DISTANCE;
 
