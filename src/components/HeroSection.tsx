@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 
 const GRID_SIZE = 11;
 const PULL_DISTANCE = 92;
@@ -6,9 +6,10 @@ const PULL_DISTANCE = 92;
 const HeroGrid = () => {
   const gridRef = useRef<HTMLDivElement>(null);
   const cellCentersRef = useRef<Array<{ x: number; y: number }>>([]);
+  const geometryFrameRef = useRef<number>();
   const [isBursting, setIsBursting] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updateCellCenters = () => {
       if (!gridRef.current) return;
 
@@ -24,9 +25,27 @@ const HeroGrid = () => {
       );
     };
 
+    const scheduleGeometryUpdate = () => {
+      if (geometryFrameRef.current) cancelAnimationFrame(geometryFrameRef.current);
+      geometryFrameRef.current = requestAnimationFrame(updateCellCenters);
+    };
+
     updateCellCenters();
-    window.addEventListener("resize", updateCellCenters);
-    return () => window.removeEventListener("resize", updateCellCenters);
+    window.addEventListener("resize", scheduleGeometryUpdate);
+    window.addEventListener("scroll", scheduleGeometryUpdate, { passive: true });
+    window.visualViewport?.addEventListener("resize", scheduleGeometryUpdate);
+    window.visualViewport?.addEventListener("scroll", scheduleGeometryUpdate);
+    const resizeObserver = new ResizeObserver(scheduleGeometryUpdate);
+    if (gridRef.current) resizeObserver.observe(gridRef.current);
+
+    return () => {
+      window.removeEventListener("resize", scheduleGeometryUpdate);
+      window.removeEventListener("scroll", scheduleGeometryUpdate);
+      window.visualViewport?.removeEventListener("resize", scheduleGeometryUpdate);
+      window.visualViewport?.removeEventListener("scroll", scheduleGeometryUpdate);
+      resizeObserver.disconnect();
+      if (geometryFrameRef.current) cancelAnimationFrame(geometryFrameRef.current);
+    };
   }, []);
 
   const resetCells = () => {
@@ -46,10 +65,11 @@ const HeroGrid = () => {
       const distanceY = event.clientY - center.y;
       const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
       const amount = distance / PULL_DISTANCE;
+      const scale = distance < PULL_DISTANCE ? 1 + (1 - amount) * 0.18 : 1;
 
       cell.style.transform = distance < PULL_DISTANCE
-        ? `translate3d(${distanceX * amount}px, ${distanceY * amount}px, 0)`
-        : "translate3d(0, 0, 0)";
+        ? `translate3d(${distanceX * amount}px, ${distanceY * amount}px, 0) scale(${scale})`
+        : "translate3d(0, 0, 0) scale(1)";
     });
   };
 
