@@ -412,12 +412,15 @@
 
   .tablet3d { position: relative; width: 100%; pointer-events: none; }
   .tablet3d__stage { position: relative; width: 100%; aspect-ratio: 1360 / 1111; }
-  .tablet3d__scene { position: absolute; inset: 0; transform-origin: center; perspective: 1400px; pointer-events: none; }
-  .tablet3d__tablet { position: absolute; left: 8%; top: 18%; width: 84%; height: 64%; border-radius: 4%; transform: rotateX(8deg) rotateY(-17deg) rotateZ(3.5deg); transform-style: preserve-3d; }
-  .tablet3d__front { position: absolute; inset: 0; border-radius: 4%; background: #090a0d; box-shadow: inset 0 0 0 2px hsl(220 10% 80% / .55), inset 0 0 0 5px #0b0b0d; }
-  .tablet3d__screen { position: absolute; inset: 3%; overflow: hidden; border-radius: 2.5%; background: #0b0b0c; }
+  .tablet3d__scene { position: absolute; left: 0; top: 0; width: 1600px; height: 1700px; transform-origin: 0 0; perspective: 2800px; perspective-origin: 800px 800px; pointer-events: none; }
+  .tablet3d__shadow { position: absolute; left: 340px; top: 1249px; width: 890px; height: 130px; border-radius: 50%; background: radial-gradient(closest-side, hsl(0 0% 0% / .55), transparent); filter: blur(14px); opacity: .3; }
+  .tablet3d__tablet { position: absolute; left: 184px; top: 364px; width: 1232px; height: 872px; border-radius: 56px; transform-style: preserve-3d; pointer-events: auto; }
+  .tablet3d__ring { position: absolute; inset: 0; box-sizing: border-box; border: 10px solid #777; border-radius: 56px; }
+  .tablet3d__back { position: absolute; inset: 0; border-radius: 56px; transform: translateZ(-17px) rotateY(180deg); backface-visibility: hidden; background: linear-gradient(135deg, #8c9098, #5e6168 55%, #7a7d85); }
+  .tablet3d__front { position: absolute; inset: 0; border-radius: 56px; transform: translateZ(17px); backface-visibility: hidden; background: linear-gradient(135deg, #1b1c20 0%, #08080a 55%, #131417 100%); box-shadow: inset 0 0 0 2px hsl(220 10% 80% / .55), inset 0 0 0 5px #0b0b0d; }
+  .tablet3d__screen { position: absolute; left: 26px; top: 26px; width: 1180px; height: 820px; overflow: hidden; border-radius: 32px; background: #0b0b0c; }
   .tablet3d__screen img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .tablet3d__bar, .tablet3d__back, .tablet3d__ring, .tablet3d__glass, .tablet3d__shadow { display: none; }
+  .tablet3d__glass { position: absolute; inset: 0; pointer-events: none; border-radius: 32px; background: linear-gradient(115deg, transparent 32%, hsl(0 0% 100% / .09) 44%, transparent 56%); background-size: 260% 100%; background-position: 50% 0; }
 
   .tablet3d-mobile-banner { display: none; }
 
@@ -428,7 +431,6 @@
     .tablet3d__stage { max-width: 44rem; margin-inline: auto; }
   }
   @media (pointer: coarse) {
-    .tablet3d--gif { display: none; }
     .tablet3d-mobile-banner { display: block; width: 100%; padding: .75rem 1rem; color: hsl(var(--dark-foreground)); background: hsl(var(--dark)); transform: rotate(var(--phone-tilt, 0deg)); animation: previewSway 7s ease-in-out infinite; transform-origin: center; }
     .tablet3d-mobile-banner img { display: block; width: 100%; max-height: 14rem; object-fit: cover; border: 1px solid hsl(220 10% 80% / .3); }
     .tablet3d-mobile-banner span { display: block; padding-top: .6rem; color: hsl(var(--gold-light)); font-size: .68rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
