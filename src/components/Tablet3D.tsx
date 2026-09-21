@@ -40,6 +40,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
   }, []);
 
   useEffect(() => {
+    if (coarsePointer) return;
     const root = rootRef.current;
     const stage = stageRef.current;
     const scene = sceneRef.current;
@@ -221,7 +222,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
       tablet.removeEventListener("pointerleave", handleLeave);
       document.removeEventListener("pointermove", handleDocumentMove);
     };
-  }, [html, orientation, url]);
+  }, [coarsePointer, html, orientation, url]);
 
   const flip = () => {
     const next = orientation === "portrait" ? "landscape" : "portrait";
@@ -230,6 +231,22 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
     setOrientation(next);
     window.setTimeout(() => setFlipping(false), 1100);
   };
+
+  if (coarsePointer) {
+    const preview = (
+      <div className="tablet3d-mobile-preview__image-wrap">
+        <img src="/tablet-preview.svg" alt={`Static preview of ${title}`} />
+        <div className="tablet3d-mobile-preview__label">Static project preview</div>
+      </div>
+    );
+
+    return (
+      <div className="tablet3d-mobile-preview">
+        {url ? <a href={url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${title} project preview`}>{preview}</a> : preview}
+        <div className="tablet3d-mobile-preview__title">{title}</div>
+      </div>
+    );
+  }
 
   return (
     <div ref={rootRef} className={`tablet3d ${coarsePointer ? "is-mobile" : ""} ${orientation === "portrait" ? "is-portrait" : ""} ${active ? "is-active" : ""} ${hover ? "is-hover" : ""} ${flipping ? "is-flipping" : ""}`} onPointerEnter={() => setHover(true)} onPointerLeave={() => setHover(false)}>

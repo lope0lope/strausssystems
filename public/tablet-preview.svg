@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Project preview</title>
+  <desc id="desc">Static project preview placeholder</desc>
+  <rect width="1200" height="760" fill="#f7f5f0"/>
+  <rect width="1200" height="86" fill="#17191f"/>
+  <rect x="46" y="30" width="220" height="25" rx="3" fill="#b79862"/>
+  <rect x="46" y="138" width="620" height="42" rx="4" fill="#17191f"/>
+  <rect x="46" y="206" width="470" height="18" rx="3" fill="#c3bfb7"/>
+  <rect x="46" y="244" width="370" height="18" rx="3" fill="#c3bfb7"/>
+  <rect x="46" y="328" width="336" height="270" rx="8" fill="#17191f"/>
+  <rect x="422" y="328" width="336" height="270" rx="8" fill="#dfd8cb"/>
+  <rect x="798" y="328" width="336" height="270" rx="8" fill="#b79862"/>
+  <rect x="46" y="654" width="280" height="14" rx="3" fill="#c3bfb7"/>
+  <rect x="902" y="654" width="232" height="14" rx="3" fill="#c3bfb7"/>
+</svg>
