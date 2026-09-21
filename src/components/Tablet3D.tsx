@@ -24,6 +24,11 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
   const [active, setActive] = useState(false);
   const [flipping, setFlipping] = useState(false);
   const hasPreview = Boolean(url || html);
+  const activeRef = useRef(active);
+
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -48,7 +53,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
     const SCREEN_H = 820;
     const TABLET_W = 1024;
     const MOBILE_W = 430;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.matchMedia("(pointer: coarse)").matches;
     const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
     const windows = { landscape: { x: 145, y: 295, w: 1360, h: 1111 }, portrait: { x: 126, y: 120, w: 1360, h: 1470 } };
     const shadows = { landscape: { left: 340, top: 1249, width: 890 }, portrait: { left: 431, top: 1433, width: 690 } };
@@ -65,14 +70,15 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
       return "rgb(58,60,66)";
     };
 
-    tablet.querySelectorAll(".tablet3d__ring").forEach((ring) => ring.remove());
-    for (let index = 0; index < 20; index += 1) {
-      const ring = document.createElement("div");
-      const position = index / 19;
-      ring.className = "tablet3d__ring";
-      ring.style.transform = `translateZ(${((THICK / 2 - 1) - position * (THICK - 2)).toFixed(2)}px)`;
-      ring.style.borderColor = metal(position);
-      tablet.insertBefore(ring, tablet.querySelector(".tablet3d__front"));
+    if (!tablet.querySelector(".tablet3d__ring")) {
+      for (let index = 0; index < 20; index += 1) {
+        const ring = document.createElement("div");
+        const position = index / 19;
+        ring.className = "tablet3d__ring";
+        ring.style.transform = `translateZ(${((THICK / 2 - 1) - position * (THICK - 2)).toFixed(2)}px)`;
+        ring.style.borderColor = metal(position);
+        tablet.insertBefore(ring, tablet.querySelector(".tablet3d__front"));
+      }
     }
 
     const layoutStage = (mode: Orientation) => {
@@ -148,7 +154,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
       if (!running) return;
       const elapsed = Math.min(0.1, (now - last) / 1000 || 0.016);
       last = now;
-      const spring = pointerInside || active ? TRACK : RETURN;
+      const spring = pointerInside || activeRef.current ? TRACK : RETURN;
       const steps = Math.ceil(elapsed * 60);
       const delta = elapsed / steps;
       for (let index = 0; index < steps; index += 1) {
@@ -201,7 +207,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
       tablet.removeEventListener("pointerleave", handleLeave);
       document.removeEventListener("pointermove", handleDocumentMove);
     };
-  }, [active, html, orientation, url]);
+  }, [html, orientation, url]);
 
   const flip = () => {
     const next = orientation === "portrait" ? "landscape" : "portrait";
@@ -221,7 +227,7 @@ const Tablet3D = ({ title, url, html }: Tablet3DProps) => {
             <div className="tablet3d__front">
               <div className="tablet3d__screen">
                 <div ref={viewRef} className="tablet3d__view">
-                  <iframe ref={frameRef} title={`${title} live preview`} src={url || undefined} srcDoc={url ? undefined : html || undefined} sandbox={url ? undefined : "allow-scripts allow-forms allow-popups"} loading="lazy" />
+                  <iframe ref={frameRef} title={`${title} live preview`} src={url || undefined} srcDoc={url ? undefined : html || undefined} sandbox={url ? undefined : "allow-scripts allow-forms allow-popups"} />
                   {!hasPreview && <div className="tablet3d__empty">Preview ready for a project URL or HTML page</div>}
                   {!active && hasPreview && <button className="tablet3d__hit" type="button" onClick={() => setActive(true)} aria-label={`Interact with ${title} preview`}><span>Click to interact</span></button>}
                   <div className="tablet3d__hint">Click to interact</div>
