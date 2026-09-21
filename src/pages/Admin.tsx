@@ -9,6 +9,9 @@ import { Trash2, Upload, LogOut, Eye, EyeOff } from "lucide-react";
 type WorkPost = {
   id: string;
   title: string;
+  description: string | null;
+  project_url: string | null;
+  html: string | null;
   published: boolean;
   sort_order: number;
   created_at: string;
@@ -25,6 +28,8 @@ const Admin = () => {
   const [busy, setBusy] = useState(false);
 
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [projectUrl, setProjectUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [posts, setPosts] = useState<WorkPost[]>([]);
 
@@ -54,7 +59,7 @@ const Admin = () => {
   const loadPosts = async () => {
     const { data } = await supabase
       .from("work_posts")
-      .select("id,title,published,sort_order,created_at")
+      .select("id,title,description,project_url,html,published,sort_order,created_at")
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false });
     setPosts(data ?? []);
@@ -90,11 +95,14 @@ const Admin = () => {
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file) return toast.error("Choose an HTML file");
+    if (!projectUrl.trim() && !file) return toast.error("Add a project URL or choose an HTML file");
+    if (projectUrl.trim() && !/^https?:\/\//i.test(projectUrl.trim())) return toast.error("Project URL must start with http:// or https://");
     setBusy(true);
-    const html = await file.text();
+    const html = file ? await file.text() : null;
     const { error } = await supabase.from("work_posts").insert({
-      title: title.trim() || file.name.replace(/\.html?$/i, ""),
+      title: title.trim() || file?.name.replace(/\.html?$/i, "") || projectUrl.trim(),
+      description: description.trim() || null,
+      project_url: projectUrl.trim() || null,
       html,
       sort_order: posts.length,
       created_by: session?.user.id ?? null,
@@ -103,9 +111,11 @@ const Admin = () => {
     if (error) return toast.error(error.message);
     toast.success("Post published to the Our Work carousel");
     setTitle("");
+    setDescription("");
+    setProjectUrl("");
     setFile(null);
-    (document.getElementById("html-file") as HTMLInputElement | null)?.value &&
-      ((document.getElementById("html-file") as HTMLInputElement).value = "");
+    const fileInput = document.getElementById("html-file") as HTMLInputElement | null;
+    if (fileInput) fileInput.value = "";
     loadPosts();
   };
 
@@ -124,10 +134,8 @@ const Admin = () => {
     }
   };
 
-  const inputClass =
-    "w-full bg-ink border border-cream/15 rounded-sm px-4 py-3 text-cream placeholder:text-muted-text focus:outline-none focus:border-gold";
   const btnClass =
-    "text-[0.8rem] font-medium tracking-[0.08em] uppercase text-gold border border-gold px-5 py-3 rounded-sm hover:bg-gold hover:text-ink transition-colors disabled:opacity-50";
+    "text-[0.8rem] font-medium tracking-[0.08em] uppercase text-gold border border-gold px-5 py-3 rounded-sm hover:bg-gold hover:text-primary-foreground transition-colors disabled:opacity-50";
 
   return (
     <>
@@ -136,26 +144,26 @@ const Admin = () => {
         <meta name="description" content="Private area for publishing case study posts to the Strauss-Strategies work carousel." />
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
-      <main className="min-h-screen bg-ink px-[5vw] py-20">
+      <main className="admin-page px-[5vw] py-20">
         <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-3 text-[0.72rem] font-medium tracking-[0.18em] uppercase text-gold mb-4">
+          <div className="eyebrow mb-4">
             <span className="inline-block w-6 h-px bg-gold" />
             Post Manager
           </div>
-          <h1 className="font-serif text-[clamp(2rem,3.5vw,3rem)] font-light text-cream mb-10">
+          <h1 className="section-title mb-10">
             Publish a <em className="italic text-gold-light">case study</em>
           </h1>
 
           {checking ? (
-            <p className="text-cream/60">Loading…</p>
+            <p className="admin-status">Loading...</p>
           ) : !session ? (
             <form onSubmit={handleAuth} className="max-w-sm space-y-4">
-              <input className={inputClass} type="email" placeholder="Email" value={email} required onChange={(e) => setEmail(e.target.value)} />
-              <input className={inputClass} type="password" placeholder="Password" value={password} required minLength={6} onChange={(e) => setPassword(e.target.value)} />
+              <input className="admin-input" type="email" placeholder="Email" value={email} required onChange={(e) => setEmail(e.target.value)} />
+              <input className="admin-input" type="password" placeholder="Password" value={password} required minLength={6} onChange={(e) => setPassword(e.target.value)} />
               <button className={btnClass} disabled={busy} type="submit">
                 {mode === "signin" ? "Sign in" : "Create account"}
               </button>
-              <button type="button" onClick={handleGoogle} className="block text-[0.8rem] tracking-[0.08em] uppercase text-cream/70 border border-cream/20 px-5 py-3 rounded-sm hover:border-gold hover:text-gold transition-colors">
+              <button type="button" onClick={handleGoogle} className="block text-[0.8rem] tracking-[0.08em] uppercase text-cream-mid border border-border px-5 py-3 rounded-sm hover:border-gold hover:text-gold transition-colors">
                 Continue with Google
               </button>
               <button type="button" className="text-[0.8rem] text-muted-text hover:text-gold" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>
@@ -164,36 +172,41 @@ const Admin = () => {
             </form>
           ) : !isAdmin ? (
             <div className="space-y-4">
-              <p className="text-cream/70">This account does not have publishing access.</p>
+              <p className="text-cream-mid">This account does not have publishing access.</p>
               <button className={btnClass} onClick={() => supabase.auth.signOut()}>Sign out</button>
             </div>
           ) : (
             <div className="space-y-12">
               <div className="flex items-center justify-between">
-                <p className="text-[0.85rem] text-muted-text">Signed in as {session.user.email}</p>
+                <p className="admin-status">Signed in as {session.user.email}</p>
                 <button className="flex items-center gap-2 text-[0.8rem] text-muted-text hover:text-gold" onClick={() => supabase.auth.signOut()}>
                   <LogOut className="w-4 h-4" /> Sign out
                 </button>
               </div>
 
-              <form onSubmit={handleUpload} className="space-y-4 border border-cream/[0.08] rounded-sm p-8 bg-ink-soft">
+              <form onSubmit={handleUpload} className="admin-panel space-y-4 p-8">
                 <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold">Title</label>
-                <input className={inputClass} value={title} placeholder="e.g. CrocTrack — KZN Case Study" onChange={(e) => setTitle(e.target.value)} />
-                <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold pt-2">HTML file</label>
-                <input id="html-file" className={inputClass} type="file" accept=".html,.htm,text/html" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+                <input className="admin-input" value={title} placeholder="e.g. CrocTrack - KZN Case Study" onChange={(e) => setTitle(e.target.value)} />
+                <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold pt-2">Short write-up</label>
+                <textarea className="admin-input min-h-28 resize-y" value={description} placeholder="What did this project change?" onChange={(e) => setDescription(e.target.value)} />
+                <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold pt-2">Live project URL</label>
+                <input className="admin-input" type="url" value={projectUrl} placeholder="https://your-project.com" onChange={(e) => setProjectUrl(e.target.value)} />
+                <p className="admin-status">Use a live URL or upload an HTML page below.</p>
+                <label className="block text-[0.75rem] tracking-[0.12em] uppercase text-gold pt-2">HTML page</label>
+                <input id="html-file" className="admin-input admin-file" type="file" accept=".html,.htm,text/html" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
                 <button className={`${btnClass} flex items-center gap-2`} disabled={busy} type="submit">
-                  <Upload className="w-4 h-4" /> Publish post
+                  <Upload className="w-4 h-4" /> Add project
                 </button>
               </form>
 
               <div>
                 <h2 className="font-serif text-2xl text-cream mb-4">Existing posts</h2>
                 {posts.length === 0 ? (
-                  <p className="text-cream/60">No posts yet.</p>
+                  <p className="admin-status">No posts yet.</p>
                 ) : (
                   <ul className="space-y-3">
                     {posts.map((p) => (
-                      <li key={p.id} className="flex items-center justify-between gap-4 border border-cream/[0.08] rounded-sm px-5 py-4 bg-ink-soft">
+                      <li key={p.id} className="admin-panel flex items-center justify-between gap-4 px-5 py-4">
                         <span className="text-cream truncate">{p.title}</span>
                         <span className="flex items-center gap-4 shrink-0">
                           <button onClick={() => togglePublish(p)} className="text-muted-text hover:text-gold" aria-label={p.published ? "Unpublish" : "Publish"}>

@@ -39,8 +39,10 @@ export type Database = {
         Row: {
           created_at: string
           created_by: string | null
-          html: string
+          description: string | null
+          html: string | null
           id: string
+          project_url: string | null
           published: boolean
           sort_order: number
           title: string
@@ -49,8 +51,10 @@ export type Database = {
         Insert: {
           created_at?: string
           created_by?: string | null
-          html: string
+          description?: string | null
+          html?: string | null
           id?: string
+          project_url?: string | null
           published?: boolean
           sort_order?: number
           title: string
@@ -59,8 +63,10 @@ export type Database = {
         Update: {
           created_at?: string
           created_by?: string | null
-          html?: string
+          description?: string | null
+          html?: string | null
           id?: string
+          project_url?: string | null
           published?: boolean
           sort_order?: number
           title?: string
