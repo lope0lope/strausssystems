@@ -410,62 +410,43 @@
   }
   .work-carousel__arrow:hover { color: hsl(var(--gold-light)); border-color: hsl(var(--gold-light)); background: transparent; }
 
-  .tablet-preview { position: relative; width: 100%; }
-  .tablet-preview__stage { position: relative; aspect-ratio: 1.3; transition: aspect-ratio 700ms var(--ease-premium); }
-  .tablet-preview.is-portrait .tablet-preview__stage { aspect-ratio: 0.88; }
-  .tablet-preview__scene { position: absolute; inset: 3% 0; perspective: 1500px; }
-  .tablet-preview__shadow {
-    position: absolute;
-    left: 16%;
-    right: 16%;
-    bottom: 9%;
-    height: 11%;
-    border-radius: 50%;
-    background: radial-gradient(closest-side, hsl(0 0% 0% / 0.6), transparent);
-    filter: blur(16px);
-    transition: transform 700ms var(--ease-premium);
+  .tablet3d { position: relative; width: 100%; pointer-events: none; }
+  .tablet3d__stage { position: relative; width: 100%; aspect-ratio: 1360 / 1111; }
+  .tablet3d.is-portrait .tablet3d__stage { aspect-ratio: 1360 / 1470; }
+  .tablet3d__scene { position: absolute; left: 0; top: 0; width: 1600px; height: 1700px; transform-origin: 0 0; perspective: 2800px; perspective-origin: 800px 800px; pointer-events: none; }
+  .tablet3d.is-flipping .tablet3d__stage { transition: height .9s cubic-bezier(.3,.8,.3,1); }
+  .tablet3d.is-flipping .tablet3d__scene { transition: transform .9s cubic-bezier(.3,.8,.3,1); }
+  .tablet3d__shadow { position: absolute; left: 340px; top: 1249px; width: 890px; height: 130px; border-radius: 50%; background: radial-gradient(closest-side, hsl(0 0% 0% / .55), transparent); filter: blur(14px); opacity: .3; }
+  .tablet3d__tablet { position: absolute; left: 184px; top: 364px; width: 1232px; height: 872px; border-radius: 56px; transform-style: preserve-3d; pointer-events: auto; }
+  .tablet3d__ring { position: absolute; inset: 0; box-sizing: border-box; border: 10px solid #777; border-radius: 56px; }
+  .tablet3d__back { position: absolute; inset: 0; border-radius: 56px; transform: translateZ(-17px) rotateY(180deg); backface-visibility: hidden; background: linear-gradient(135deg, #8c9098, #5e6168 55%, #7a7d85); }
+  .tablet3d__front { position: absolute; inset: 0; border-radius: 56px; transform: translateZ(17px); backface-visibility: hidden; background: linear-gradient(135deg, #1b1c20 0%, #08080a 55%, #131417 100%); box-shadow: inset 0 0 0 2px hsl(220 10% 80% / .55), inset 0 0 0 5px #0b0b0d; }
+  .tablet3d__screen { position: absolute; left: 26px; top: 26px; width: 1180px; height: 820px; overflow: hidden; border-radius: 32px; background: #0b0b0c; }
+  .tablet3d__view { position: absolute; left: 0; top: 0; width: 1180px; height: 820px; opacity: 1; transition: opacity .45s ease; }
+  .tablet3d__screen iframe { position: absolute; left: 0; top: 0; border: 0; background: white; transform-origin: 0 0; }
+  .tablet3d__empty { display: grid; place-items: center; width: 100%; height: 100%; padding: 2rem; color: hsl(var(--muted-text)); text-align: center; font-size: 0.8rem; pointer-events: none; }
+  .tablet3d__glass { position: absolute; inset: 0; pointer-events: none; border-radius: 32px; background: linear-gradient(115deg, transparent 32%, hsl(0 0% 100% / .09) 44%, transparent 56%); background-size: 260% 100%; background-position: 50% 0; }
+  .tablet3d__hit { position: absolute; inset: 0; z-index: 2; width: 100%; border: 0; background: transparent; cursor: pointer; pointer-events: auto; }
+  .tablet3d.is-active .tablet3d__hit { pointer-events: none; }
+  .tablet3d__hit span { position: absolute; left: 50%; bottom: 34px; padding: 13px 30px; color: white; background: hsl(240 5% 8% / .78); white-space: nowrap; font-size: 0.8rem; font-weight: 600; letter-spacing: .08em; opacity: 0; transform: translate(-50%, 10px); transition: opacity .35s ease, transform .35s ease; }
+  .tablet3d.is-hover:not(.is-active) .tablet3d__hit span, .tablet3d__hit:focus-visible span { opacity: 1; transform: translate(-50%, 0); }
+  .tablet3d__hint { display: none; }
+  .tablet3d__bar { display: flex; justify-content: center; padding-top: 4px; pointer-events: none; }
+  .tablet3d__flip { display: inline-flex; align-items: center; gap: .65em; padding: .75em 1.2em; color: hsl(var(--dark-muted)); background: hsl(var(--dark)); border: var(--hairline-dark); border-radius: 2px; cursor: pointer; pointer-events: auto; font-size: .7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; transition: color .2s ease, border-color .2s ease; }
+  .tablet3d__flip:hover { color: hsl(var(--gold-light)); border-color: hsl(var(--gold-light)); }
+  .tablet3d__flip svg { width: 1rem; height: 1rem; }
+  @media (hover: none), (pointer: coarse) {
+    .tablet3d__hit { display: none; }
   }
-  .tablet-preview__device {
-    position: absolute;
-    left: 7%;
-    top: 12%;
-    width: 86%;
-    aspect-ratio: 1.41;
-    transform: rotateX(calc(8deg + var(--tablet-x, 0deg))) rotateY(calc(-17deg + var(--tablet-y, 0deg))) rotateZ(3deg);
-    transform-style: preserve-3d;
-    transition: transform 700ms var(--ease-premium);
-  }
-  .tablet-preview.is-active .tablet-preview__device { transform: rotateX(2deg) rotateY(0deg) rotateZ(0deg); }
-  .tablet-preview.is-portrait .tablet-preview__device { transform: rotateX(calc(5deg + var(--tablet-x, 0deg))) rotateY(calc(-8deg + var(--tablet-y, 0deg))) rotateZ(90deg); }
-  .tablet-preview.is-portrait.is-active .tablet-preview__device { transform: rotateX(2deg) rotateY(0deg) rotateZ(90deg); }
-  .tablet-preview__back,
-  .tablet-preview__front { position: absolute; inset: 0; border-radius: clamp(1.2rem, 3vw, 2.5rem); backface-visibility: hidden; }
-  .tablet-preview__back { background: linear-gradient(135deg, #8c9098, #5e6168 55%, #7a7d85); transform: translateZ(-18px) rotateY(180deg); }
-  .tablet-preview__front {
-    padding: 2.1%;
-    background: linear-gradient(135deg, #1b1c20, #08080a 55%, #131417);
-    box-shadow: inset 0 0 0 2px hsl(220 10% 80% / 0.55), inset 0 0 0 5px #0b0b0d;
-    transform: translateZ(18px);
-  }
-  .tablet-preview__screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: clamp(0.8rem, 1.8vw, 1.5rem); background: hsl(var(--ink)); }
-  .tablet-preview__screen iframe { display: block; width: 100%; height: 100%; border: 0; background: hsl(var(--ink)); }
-  .tablet-preview__hit { position: absolute; inset: 0; display: grid; place-items: center; width: 100%; border: 0; background: hsl(220 16% 9% / 0.08); cursor: pointer; }
-  .tablet-preview__hit span { padding: 0.7rem 1rem; color: hsl(var(--dark-foreground)); background: hsl(var(--dark) / 0.84); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0; transform: translateY(0.5rem); transition: opacity 250ms ease, transform 250ms ease; }
-  .tablet-preview:hover .tablet-preview__hit span, .tablet-preview__hit:focus-visible span { opacity: 1; transform: translateY(0); }
-  .tablet-preview__empty { display: grid; place-items: center; height: 100%; padding: 2rem; color: hsl(var(--muted-text)); text-align: center; font-size: 0.8rem; }
-  .tablet-preview__controls { display: flex; justify-content: center; padding-top: 0.75rem; }
-  .tablet-preview__flip { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.65rem 0.9rem; color: hsl(var(--dark-muted)); border: var(--hairline-dark); border-radius: 2px; background: transparent; cursor: pointer; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; transition: color 240ms ease, border-color 240ms ease; }
-  .tablet-preview__flip:hover { color: hsl(var(--gold-light)); border-color: hsl(var(--gold-light)); }
-  .tablet-preview__flip svg { width: 1rem; height: 1rem; }
 
   @media (max-width: 1023px) {
     .work-carousel__slide { grid-template-columns: 1fr; min-height: 0; gap: 1rem; }
     .work-carousel__visual { order: 1; }
     .work-carousel__copy { order: 2; padding-bottom: 1rem; }
-    .tablet-preview__stage { max-width: 44rem; margin-inline: auto; }
+    .tablet3d__stage { max-width: 44rem; margin-inline: auto; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .tablet-preview__stage, .tablet-preview__device, .tablet-preview__hit span { transition: none; }
+    .tablet3d__stage, .tablet3d__tablet, .tablet3d__hit span { transition: none; }
     .work-carousel__slide--next, .work-carousel__slide--previous { animation: none; }
   }
 

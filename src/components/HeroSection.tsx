@@ -1,7 +1,7 @@
 const HeroSection = () => {
   return (
     <section id="hero" className="hero-section">
-      <div className="site-shell grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-14 lg:gap-20 items-center">
+      <div className="site-shell">
         <div className="max-w-[760px]">
           <div className="animate-fade-up animate-delay-100 eyebrow">
             <span className="inline-block w-8 h-px bg-gold" />
@@ -27,22 +27,6 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div className="animate-fade-up animate-delay-350 relative">
-          <div className="product-window hero-product-window" aria-label="Placeholder for a farm operations dashboard screenshot">
-            <div className="window-bar"><span /><span /><span /><small>Operations overview</small></div>
-            <div className="window-body">
-              <div className="mock-sidebar" />
-              <div className="mock-dashboard">
-                <div className="mock-kicker">LIVE OPERATIONS</div>
-                <div className="mock-heading">Welfare overview</div>
-                <div className="mock-metrics"><span /><span /><span /></div>
-                <div className="mock-chart"><i /><i /><i /><i /><i /><i /><i /></div>
-                <div className="mock-rows"><span /><span /><span /></div>
-              </div>
-            </div>
-          </div>
-          <div className="hero-proof"><strong>2,000+</strong><span>animals tracked digitally</span></div>
-        </div>
       </div>
     </section>
   );
