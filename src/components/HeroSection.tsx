@@ -1,11 +1,33 @@
-import { useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 
 const GRID_SIZE = 11;
 const PULL_DISTANCE = 92;
 
 const HeroGrid = () => {
   const gridRef = useRef<HTMLDivElement>(null);
+  const cellCentersRef = useRef<Array<{ x: number; y: number }>>([]);
   const [isBursting, setIsBursting] = useState(false);
+
+  useEffect(() => {
+    const updateCellCenters = () => {
+      if (!gridRef.current) return;
+
+      cellCentersRef.current = Array.from(
+        gridRef.current.querySelectorAll<HTMLElement>(".hero-grid-cell"),
+        (cell) => {
+          const bounds = cell.getBoundingClientRect();
+          return {
+            x: bounds.left + bounds.width / 2,
+            y: bounds.top + bounds.height / 2,
+          };
+        },
+      );
+    };
+
+    updateCellCenters();
+    window.addEventListener("resize", updateCellCenters);
+    return () => window.removeEventListener("resize", updateCellCenters);
+  }, []);
 
   const resetCells = () => {
     gridRef.current?.querySelectorAll<HTMLElement>(".hero-grid-cell").forEach((cell) => {
@@ -16,10 +38,12 @@ const HeroGrid = () => {
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (isBursting || !gridRef.current) return;
 
-    gridRef.current.querySelectorAll<HTMLElement>(".hero-grid-cell").forEach((cell) => {
-      const cellBounds = cell.getBoundingClientRect();
-      const distanceX = event.clientX - (cellBounds.left + cellBounds.width / 2);
-      const distanceY = event.clientY - (cellBounds.top + cellBounds.height / 2);
+    gridRef.current.querySelectorAll<HTMLElement>(".hero-grid-cell").forEach((cell, index) => {
+      const center = cellCentersRef.current[index];
+      if (!center) return;
+
+      const distanceX = event.clientX - center.x;
+      const distanceY = event.clientY - center.y;
       const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
       const amount = distance / PULL_DISTANCE;
 
