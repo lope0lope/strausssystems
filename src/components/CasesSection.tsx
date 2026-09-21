@@ -9,16 +9,13 @@ type WorkPost = {
   id: string;
   title: string;
   description: string | null;
-  project_url: string | null;
-  html: string | null;
 };
 
 type WorkSlide = {
   id: string;
   title: string;
   description: string;
-  url?: string | null;
-  html?: string | null;
+  gif: string;
   story?: CaseStudy;
 };
 
@@ -35,7 +32,7 @@ const CasesSection = () => {
   useEffect(() => {
     supabase
       .from("work_posts")
-      .select("id,title,description,project_url,html")
+      .select("id,title,description")
       .eq("published", true)
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false })
@@ -47,13 +44,13 @@ const CasesSection = () => {
         id: post.id,
         title: post.title,
         description: post.description || "A project preview from Strauss-Strategies.",
-        url: post.project_url,
-        html: post.html,
+        gif: "/croc.gif",
       }))
     : stories.map((story) => ({
         id: story.id,
         title: story.name,
         description: story.oneLiner,
+        gif: story.id === "croctrack" ? "/croc.gif" : "/tablet-preview.svg",
         story,
       }));
 
@@ -101,7 +98,7 @@ const CasesSection = () => {
         >
           <div className={`work-carousel__slide work-carousel__slide--${direction}`} key={current.id} aria-live="polite">
             <div className="work-carousel__visual">
-              <Tablet3D title={current.title} url={current.url} html={current.html} />
+              <Tablet3D title={current.title} gif={current.gif} />
             </div>
             <div className="project-copy work-carousel__copy">
               <div className="technical-label text-gold">0{activeIndex + 1} / {String(slides.length).padStart(2, "0")}</div>
@@ -111,7 +108,7 @@ const CasesSection = () => {
                 <div className="project-outcome"><span>Outcome</span><strong>{current.story.stat}</strong></div>
               )}
               <div className="work-carousel__meta">
-                <span>{current.url ? "Live project preview" : current.html ? "Uploaded HTML preview" : "Preview ready"}</span>
+                <span>Animated project preview</span>
                 <span>Swipe or use the arrows to browse</span>
               </div>
             </div>
